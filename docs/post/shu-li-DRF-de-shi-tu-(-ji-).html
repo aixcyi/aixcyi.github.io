@@ -1,71 +1,348 @@
+<!DOCTYPE html>
 <html data-color-mode="light" data-dark-theme="dark" data-light-theme="light">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="content-type" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link href="https://unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
-<link href="https://unpkg.com/@primer/css@^21.0.7/dist/primer.css" rel="stylesheet" />
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.org/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/75880483">
+    <script>
+        if(localStorage.getItem("meek_theme")==null){}
+        else if(localStorage.getItem("meek_theme")=="dark"){document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="dark";}
+        else if(localStorage.getItem("meek_theme")=="light"){document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="light";}
+    </script>
+    
+<title>梳理DRF的视图(集)</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 </head>
 <style>
-.markdown-body {
+body{
     box-sizing: border-box;
     min-width: 200px;
     max-width: 900px;
-    margin: 10px auto;
+    margin: 20px auto;
     padding: 45px;
+    font-size: 16px;
     font-family: sans-serif;
-}
-@media (max-width: 560px) {
-    .markdown-body { padding: 8px;} 
+    line-height: 1.25;
 }
 
 .avatar {transition: 0.8s;}
 .avatar:hover {transform: scale(1.15) rotate(360deg);}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
 
-h1 {display:flex;}
-.title-right{display:flex;margin:auto 0 0 auto;}
-.title-right button{margin-left:8px;padding:16px;}
-.SideNav{min-width: 360px;}
-.SideNav-icon{margin-right: 16px}
-#postBody{border-bottom: 1px solid var(--color-border-default);}
-#comments{margin-top:64px;}
-.footer {margin: 40px auto; text-align: center;font-size: small;}
-#cmButton{height:48px;margin-top:48px;}
 </style>
-<script>var blogBase={"postTitle": "\u68b3\u7406DRF\u7684\u89c6\u56fe(\u96c6)", "postBody": "<p><a href=\"https://docs.python.org/zh-cn/3/index.html\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/f828e2ccbea9602aa54e417311e0d6e96f4719171c0f1051f93857692a8d0ced/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f507974686f6e2d3337373641423f6c6f676f3d707974686f6e266c6f676f436f6c6f723d4646443433422663616368655365636f6e64733d3836343030\" alt=\"Static Badge\" data-canonical-src=\"https://img.shields.io/badge/Python-3776AB?logo=python&amp;logoColor=FFD43B&amp;cacheSeconds=86400\" style=\"max-width: 100%;\"></a> <a href=\"https://docs.djangoproject.com/zh-hans/4.2/\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/9807661716c476dfaaf8c57eb82b42a2bacc19a9494c01cf8460bb3479596247/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446a616e676f2d3039324532303f6c6f676f3d646a616e676f2663616368655365636f6e64733d3836343030\" alt=\"Django \u6587\u6863\" data-canonical-src=\"https://img.shields.io/badge/Django-092E20?logo=django&amp;cacheSeconds=86400\" style=\"max-width: 100%;\"></a> <a href=\"https://www.django-rest-framework.org/\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/5363d1e5a64fc6a2eebf8a684d12bb31477610ee04d0a12a826aa751efbe4837/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446a616e676f5f524553545f4672616d65776f726b2d3965303030303f63616368655365636f6e64733d3836343030\" alt=\"Static Badge\" data-canonical-src=\"https://img.shields.io/badge/Django_REST_Framework-9e0000?cacheSeconds=86400\" style=\"max-width: 100%;\"></a></p>\n<p>\u4e3b\u8981\u4e1a\u52a1\u903b\u8f91\u91cd\u5199\u70b9\u96c6\u4e2d\u5728\u8fd9\u51e0\u4e2a\u7c7b\uff0c\u5b83\u4eec\u901a\u8fc7\u5355\u7ee7\u627f\u6765\u6269\u5c55\uff1a</p>\n<ul>\n<li>\n<code>View</code> \u53ea\u63d0\u4f9b\u4e86\u57fa\u672c\u7684\u5c06HTTP\u8bf7\u6c42\u8f6c\u53d1\u5230\u540c\u540d\u7c7b\u65b9\u6cd5\u5904\u7406\u7684\u529f\u80fd\u3002</li>\n<li>\n<code>APIView</code> \u63d0\u4f9b\u4e86\u6807\u5934\u5b9a\u5236\u3001\u6743\u9650\u68c0\u67e5\u3001\u9650\u6d41\u3001\u8bf7\u6c42\u5185\u5bb9\u89e3\u6790\u5b9a\u5236\u3001\u54cd\u5e94\u5185\u5bb9\u5e8f\u5217\u5316\u5b9a\u5236\u3001\u5f02\u5e38\u5904\u7406\u3001\u63a5\u53e3\u7248\u672c\u7ba1\u7406\u7b49\u529f\u80fd\u3002</li>\n<li>\n<code>GenericAPIView</code> \u63d0\u4f9b\u4e86\u67e5\u8be2\u96c6\u3001\u5bf9\u8c61\u3001\u5e8f\u5217\u5316\u5668\u7684\u83b7\u53d6\u63a5\u53e3\uff0c\u4ee5\u53ca\u5206\u9875\u63a5\u53e3\u3002</li>\n</ul>\n<p>\u4ee5\u4e0a\uff0c\u6240\u6709HTTP\u8bf7\u6c42\u90fd\u4f1a\u6309\u7167HTTP\u65b9\u6cd5\u8f6c\u53d1\u7ed9\u540c\u540d\u7c7b\u65b9\u6cd5\u6765\u5904\u7406\u3002<br>\n\u901a\u8fc7\u6df7\u5165 <code>ViewSetMixin</code> \u5141\u8bb8\u4e00\u4e2a\u89c6\u56fe\u7c7b\u5904\u7406\u591a\u4e2a\u540c\u79cdHTTP\u8bf7\u6c42\uff0c\u6bd4\u5982\u5217\u8868\u7684GET\u548c\u8be6\u60c5\u7684GET\u5206\u522b\u8f6c\u53d1\u5230\u81ea\u5b9a\u4e49\u7684 <code>.list()</code> \u548c <code>retrieve()</code> \uff0c\u7ee7\u800c\u884d\u751f\u51fa\u4ee5\u4e0b\u89c6\u56fe\u96c6\u7c7b\uff1a</p>\n<ul>\n<li>\n<code>ViewSet</code> = <code>ViewSetMixin</code> + <code>APIView</code>\n</li>\n<li>\n<code>GenericViewSet</code> = <code>ViewSetMixin</code> + <code>GenericAPIView</code>\n</li>\n</ul>\n<p><code>GenericAPIView</code> \u548c <code>GenericViewSet</code> \u53c8\u53ef\u4ee5\u901a\u8fc7\u6df7\u5165\u4ee5\u4e0b\u51e0\u4e2a\u57fa\u7840\u7684 Mix-in \u884d\u751f\u51fa\u4e00\u5806\u9884\u5236\u7684\u89c6\u56fe\u7c7b\u3002</p>\n<ul>\n<li>\n<code>ListModelMixin</code> \u901a\u8fc7 <code>.list()</code> \u5217\u51fa\u4e00\u4efd\u67e5\u8be2\u96c6\uff0c\u5e76\u8c03\u7528 <code>GenericAPIView</code> \u7684 <code>.paginate_queryset()</code> \u548c <code>.get_paginated_response()</code> \u8fdb\u884c\u5206\u9875\u3002</li>\n<li>\n<code>CreateModelMixin</code> \u901a\u8fc7 <code>.create()</code> \u521b\u5efa\u4e00\u4e2a\u6a21\u578b\u5e76\u8fd4\u56de201\uff0c\u6700\u7ec8\u662f\u901a\u8fc7 <code>.perform_create()</code> \u7528\u5e8f\u5217\u5316\u5668\u521b\u5efa\u3002</li>\n<li>\n<code>RetrieveModelMixin</code> \u901a\u8fc7 <code>.retrieve()</code> \u83b7\u53d6\u4e00\u4e2a\u6a21\u578b\u5b9e\u4f8b\u3002</li>\n<li>\n<code>UpdateModelMixin</code> \u901a\u8fc7 <code>.update()</code> \u5168\u91cf\u66f4\u65b0\u548c <code>.partial_update()</code> \u90e8\u5206\u66f4\u65b0\u4e00\u4e2a\u6a21\u578b\u5b9e\u4f8b\uff0c\u6700\u7ec8\u662f\u901a\u8fc7 <code>.perform_update()</code> \u7528\u5e8f\u5217\u5316\u5668\u66f4\u65b0\u3002</li>\n<li>\n<code>DestroyModelMixin</code> \u901a\u8fc7 <code>.destroy()</code> \u5220\u9664\u4e00\u4e2a\u6a21\u578b\u5b9e\u4f8b\u5e76\u8fd4\u56de\u65e0\u5185\u5bb9\u7684204\uff0c\u6700\u7ec8\u662f\u901a\u8fc7 <code>.perform_destroy()</code> \u76f4\u63a5\u5220\u9664\u6a21\u578b\u5b9e\u4f8b\u3002</li>\n</ul>\n<p>\u4e0b\u9762\u901a\u8fc7\u4e24\u6761\u4e3b\u7ebf\u6765\u6d45\u6790\u89c6\u56fe(\u96c6)\u3002</p>\n<h2><a id=\"user-content-dispatch\u7ebf\" class=\"anchor\" aria-hidden=\"true\" href=\"#dispatch\u7ebf\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>dispatch\u7ebf</h2>\n<p>Django \u7684 <code>View</code> \u901a\u8fc7 <code>.dispatch()</code> \u5c06\u63a5\u6536\u5230\u7684 <a href=\"https://docs.djangoproject.com/zh-hans/4.2/ref/request-response/#httprequest-objects\" rel=\"nofollow\"><code>HttpRequest</code></a> \u8f6c\u53d1\u5230HTTP\u540c\u540d\u7c7b\u65b9\u6cd5\u5904\u7406\u5e76\u8fd4\u56de <a href=\"https://docs.djangoproject.com/zh-hans/4.2/ref/request-response/#httpresponse-objects\" rel=\"nofollow\"><code>HttpResponse</code></a> \uff0c\u6d41\u7a0b\u5982\u4ee5\u4e0b\u4ee3\u7801\u6240\u793a\u610f\uff1a</p>\n<div class=\"highlight highlight-source-python\"><pre><span class=\"pl-k\">from</span> <span class=\"pl-s1\">django</span>.<span class=\"pl-s1\">views</span>.<span class=\"pl-s1\">generic</span>.<span class=\"pl-s1\">base</span> <span class=\"pl-k\">import</span> <span class=\"pl-v\">View</span>\n\n<span class=\"pl-k\">class</span> <span class=\"pl-v\">MeowView</span>(<span class=\"pl-v\">View</span>):\n\n    <span class=\"pl-c\"># GET \u8bf7\u6c42\u5c06\u88ab\u8f6c\u53d1\u5230\u8fd9\u4e2a\u51fd\u6570\u6765\u5904\u7406</span>\n    <span class=\"pl-k\">def</span> <span class=\"pl-en\">get</span>(<span class=\"pl-s1\">self</span>, <span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>):\n        <span class=\"pl-k\">pass</span>\n\n    <span class=\"pl-c\"># POST \u8bf7\u6c42\u5c06\u88ab\u8f6c\u53d1\u5230\u8fd9\u91cc</span>\n    <span class=\"pl-k\">def</span> <span class=\"pl-en\">post</span>(<span class=\"pl-s1\">self</span>, <span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>):\n        <span class=\"pl-k\">pass</span>\n\n    <span class=\"pl-c\"># OPTIONS\u3001PUT\u3001DELETE \u7b49\u540c\u7406</span></pre></div>\n<p>\u65b9\u6cd5\u7684\u4ee3\u7801\u5927\u81f4\u5982\u4e0b\uff1a</p>\n<div class=\"highlight highlight-source-python\"><pre><span class=\"pl-c\"># \u7701\u7565\u4e86\u5f88\u591a\u7ec6\u8282...</span>\n<span class=\"pl-k\">def</span> <span class=\"pl-en\">dispatch</span>(<span class=\"pl-s1\">self</span>, <span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>):\n    <span class=\"pl-c\"># \u5c06\u8bf7\u6c42\u8f6c\u53d1\u5230\u540c\u540d\u7c7b\u65b9\u6cd5\u6765\u5904\u7406</span>\n    <span class=\"pl-k\">if</span> <span class=\"pl-s1\">request</span>.<span class=\"pl-s1\">method</span>.<span class=\"pl-en\">lower</span>() <span class=\"pl-c1\">in</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">http_method_names</span>:\n        <span class=\"pl-s1\">handler</span> <span class=\"pl-c1\">=</span> <span class=\"pl-en\">getattr</span>(<span class=\"pl-s1\">self</span>, <span class=\"pl-s1\">request</span>.<span class=\"pl-s1\">method</span>.<span class=\"pl-en\">lower</span>(),\n                          <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">http_method_not_allowed</span>)\n    <span class=\"pl-c\"># \u5982\u679c\u627e\u4e0d\u5230\uff0c\u6216\u8bf7\u6c42\u65b9\u6cd5\u662f\u975e\u6cd5\u7684\uff0c</span>\n    <span class=\"pl-c\"># \u5c31\u8f6c\u5230 self.http_method_not_allowed() \u5904\u7406\u3002</span>\n    <span class=\"pl-k\">else</span>:\n        <span class=\"pl-s1\">handler</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">http_method_not_allowed</span>\n    <span class=\"pl-k\">return</span> <span class=\"pl-en\">handler</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>)</pre></div>\n<p>DRF \u7684 <code>APIView</code> \u91cd\u8f7d\u4e86 <code>.dispatch()</code>\uff0c\u4e3b\u8981\u4f5c\u7528\u4e0e\u524d\u8005\u4e00\u6837\uff0c\u4f46\u6dfb\u52a0\u4e86</p>\n<ul>\n<li>\n<code>.initialize_request()</code> \u5b9a\u5236\u8bf7\u6c42\u5bf9\u8c61\uff1b</li>\n<li>\n<code>.initial()</code> \u5728\u5904\u7406\u524d\u521d\u59cb\u5316\uff1b</li>\n<li>\u515c\u4f4f\u5904\u7406\u65f6\u7684\u5f02\u5e38\uff0c\u5e76\u4ea4\u7ed9 <code>.handle_exception()</code> \u5904\u7406\uff1b</li>\n<li>\n<code>.finalize_response()</code> \u5b9a\u5236\u54cd\u5e94\u5bf9\u8c61</li>\n</ul>\n<p>\u51e0\u4e2a\u7279\u6027\u3002\u5176\u4ee3\u7801\u5927\u81f4\u5982\u4e0b\uff1a</p>\n<div class=\"highlight highlight-source-python\"><pre><span class=\"pl-c\"># \u7701\u7565\u4e86\u5f88\u591a\u7ec6\u8282...</span>\n<span class=\"pl-k\">def</span> <span class=\"pl-en\">dispatch</span>(<span class=\"pl-s1\">self</span>, <span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>):\n    <span class=\"pl-c\"># \u521d\u59cb\u5316request\u7684\u4e00\u4e9b\u4e1c\u897f\uff0c\u6bd4\u5982\u8eab\u4efd\u9a8c\u8bc1\u3002</span>\n    <span class=\"pl-s1\">request</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-en\">initialize_request</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>)\n\n    <span class=\"pl-c\"># \u9644\u52a0\u5230\u5bf9\u8c61\u4e2d\u3002\u5728\u4e0d\u80fd\u6216\u4e0d\u4fbf\u4f20\u53c2\u7684\u5730\u65b9\u4f7f\u7528\u89c6\u56fe\u5bf9\u8c61\u6765\u83b7\u5f97\u5f53\u524d\u8bf7\u6c42\u3002</span>\n    <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">request</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">request</span>\n\n    <span class=\"pl-k\">try</span>:\n        <span class=\"pl-c\"># \u521d\u59cb\u5316\u3002\u8eab\u4efd\u9a8c\u8bc1\u3001\u6743\u9650\u68c0\u67e5\u3001\u9891\u7387\u9650\u5236\u5c31\u662f\u5728\u8fd9\u91cc\u505a\u7684\u3002</span>\n        <span class=\"pl-c\"># \u53ef\u4ee5\u7ee7\u627f\u91cd\u5199\u6dfb\u52a0\u81ea\u5df1\u7684\u521d\u59cb\u5316\uff0c\u6bd4\u5982\u63a7\u5236\u67e5\u8be2\u96c6\u8303\u56f4\u7b49\u3002</span>\n        <span class=\"pl-s1\">self</span>.<span class=\"pl-en\">initial</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>)\n\n        <span class=\"pl-c\"># \u5c06\u8bf7\u6c42\u8f6c\u53d1\u5230\u540c\u540d\u7c7b\u65b9\u6cd5\u6765\u5904\u7406</span>\n        <span class=\"pl-k\">if</span> <span class=\"pl-s1\">request</span>.<span class=\"pl-s1\">method</span>.<span class=\"pl-en\">lower</span>() <span class=\"pl-c1\">in</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">http_method_names</span>:\n            <span class=\"pl-s1\">handler</span> <span class=\"pl-c1\">=</span> <span class=\"pl-en\">getattr</span>(<span class=\"pl-s1\">self</span>, <span class=\"pl-s1\">request</span>.<span class=\"pl-s1\">method</span>.<span class=\"pl-en\">lower</span>(),\n                              <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">http_method_not_allowed</span>)\n        <span class=\"pl-c\"># \u5982\u679c\u627e\u4e0d\u5230\uff0c\u6216\u8bf7\u6c42\u65b9\u6cd5\u662f\u975e\u6cd5\u7684\uff0c</span>\n        <span class=\"pl-c\"># \u5c31\u8f6c\u5230 self.http_method_not_allowed() \u5904\u7406\u3002</span>\n        <span class=\"pl-k\">else</span>:\n            <span class=\"pl-s1\">handler</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">http_method_not_allowed</span>\n        <span class=\"pl-s1\">response</span> <span class=\"pl-c1\">=</span> <span class=\"pl-en\">handler</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>)\n\n    <span class=\"pl-c\"># \u5904\u7406\u5f02\u5e38\u3002\u6ce8\u610f\u8fd9\u91cc\u62e6\u622a\u7684\u662f Exception\uff0c\u50cf KeyboardInterrupt \u8fd9\u4e9b\u662f\u62e6\u622a\u4e0d\u5230\u7684\u3002</span>\n    <span class=\"pl-k\">except</span> <span class=\"pl-v\">Exception</span> <span class=\"pl-k\">as</span> <span class=\"pl-s1\">exc</span>:\n        <span class=\"pl-s1\">response</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-en\">handle_exception</span>(<span class=\"pl-s1\">exc</span>)\n\n    <span class=\"pl-c\"># \u6574\u7406response\u3002\u5728\u8fd9\u91cc\u5b9a\u5236\u81ea\u5df1\u9700\u8981\u7684\u8fd4\u56de\u503c\u683c\u5f0f\u3001\u54cd\u5e94\u7801\u7b49\u7b49\u3002</span>\n    <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">response</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-en\">finalize_response</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-s1\">response</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>)\n    <span class=\"pl-k\">return</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">response</span></pre></div>\n<h2><a id=\"user-content-as_view\u7ebf\" class=\"anchor\" aria-hidden=\"true\" href=\"#as_view\u7ebf\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>as_view\u7ebf</h2>\n<p><code>.as_view()</code> \u662f\u5c06\u89c6\u56fe\u7c7b\u7684\u521d\u59cb\u5316\u3001\u6267\u884c\u7b49\u64cd\u4f5c\u5b58\u50a8\u5728\u4e00\u4e2a\u51fd\u6570\u4e2d\uff08\u6709\u70b9\u88c5\u9970\u5668\u90a3\u5473\u513f\uff09\uff0c\u4f9b\u8def\u7531\u8c03\u7528\uff0c\u4e5f\u5c31\u662f\u5904\u7406\u8bf7\u6c42\u548c\u54cd\u5e94\u7684\u4e3b\u5165\u53e3\uff08Main entry point for a request-response process.\uff09\u3002</p>\n<p><code>View</code> \u7684 <code>as_view()</code> \u4ee3\u7801\u5927\u81f4\u5982\u4e0b\uff1a</p>\n<div class=\"highlight highlight-source-python\"><pre><span class=\"pl-c\"># \u7701\u7565\u4e86\u5f88\u591a\u7ec6\u8282...</span>\n<span class=\"pl-en\">@<span class=\"pl-s1\">classonlymethod</span></span>\n<span class=\"pl-k\">def</span> <span class=\"pl-en\">as_view</span>(<span class=\"pl-s1\">cls</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">initkwargs</span>):\n    <span class=\"pl-c\"># \u8fd9\u4e2a initkwargs \u662f\u4e0b\u9762\u7528\u6765\u521d\u59cb\u5316 View \u7684\u53c2\u6570\uff0c</span>\n    <span class=\"pl-c\"># \u952e\u4e0d\u80fd\u662fHTTP\u8bf7\u6c42\u65b9\u6cd5\uff0c\u4e5f\u4e0d\u80fd\u662f View \u6ca1\u6709\u7684\u5c5e\u6027\uff1b</span>\n    <span class=\"pl-c\"># \u800c\u56de\u770b View \u53d1\u73b0 __init__() \u662f\u81ea\u5b9a\u4e49 self \u7684\u5c5e\u6027\u6216\u65b9\u6cd5\uff0c</span>\n    <span class=\"pl-c\"># \u56e0\u6b64 as_view() \u5b9e\u9645\u4e0a\u662f\u5141\u8bb8\u6211\u4eec</span>\n    <span class=\"pl-c\"># \u8986\u76d6 View \u5bf9\u8c61\u539f\u6709\u7684\u5c5e\u6027\u548c\u65b9\u6cd5\uff08\u9664\u4e86\u5904\u7406\u8bf7\u6c42\u90a3\u90e8\u5206\uff09\u3002</span>\n\n    <span class=\"pl-k\">def</span> <span class=\"pl-en\">view</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>):\n        <span class=\"pl-s1\">self</span> <span class=\"pl-c1\">=</span> <span class=\"pl-en\">cls</span>(<span class=\"pl-c1\">**</span><span class=\"pl-s1\">initkwargs</span>)\n        <span class=\"pl-s1\">self</span>.<span class=\"pl-en\">setup</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>)\n        <span class=\"pl-k\">if</span> <span class=\"pl-c1\">not</span> <span class=\"pl-en\">hasattr</span>(<span class=\"pl-s1\">self</span>, <span class=\"pl-s\">'request'</span>):\n            <span class=\"pl-k\">raise</span> <span class=\"pl-v\">AttributeError</span>()\n        <span class=\"pl-k\">return</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-en\">dispatch</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>)\n\n    <span class=\"pl-s1\">view</span>.<span class=\"pl-s1\">view_class</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">cls</span>\n    <span class=\"pl-s1\">view</span>.<span class=\"pl-s1\">view_initkwargs</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">initkwargs</span>\n    <span class=\"pl-k\">return</span> <span class=\"pl-s1\">view</span></pre></div>\n<p>\u800c <code>APIView</code> \u7684 <code>as_view()</code> \u9664\u4e86\u8981\u6c42 <strong>\u89c6\u56fe\u7c7b</strong> \u4e0d\u80fd\u76f4\u63a5\u5b58\u50a8\u67e5\u8be2\u96c6\u4e4b\u5916\uff0c\u4e5f\u4ec5\u4ec5\u5145\u5f53\u4e00\u4e2a\u57fa\u7c7b\u7684\u4f5c\u7528\uff0c\u5e76\u6ca1\u6709\u6dfb\u52a0\u4ec0\u4e48\u4e1c\u897f\u3002</p>\n<p>\u4ee3\u7801\u5927\u81f4\u5982\u4e0b\uff1a</p>\n<div class=\"highlight highlight-source-python\"><pre><span class=\"pl-c\"># \u7701\u7565\u4e86\u5f88\u591a\u7ec6\u8282...</span>\n<span class=\"pl-en\">@<span class=\"pl-s1\">classmethod</span></span>\n<span class=\"pl-k\">def</span> <span class=\"pl-en\">as_view</span>(<span class=\"pl-s1\">cls</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">initkwargs</span>):\n\n    <span class=\"pl-s1\">view</span> <span class=\"pl-c1\">=</span> <span class=\"pl-en\">super</span>().<span class=\"pl-en\">as_view</span>(<span class=\"pl-c1\">**</span><span class=\"pl-s1\">initkwargs</span>)\n    <span class=\"pl-s1\">view</span>.<span class=\"pl-s1\">cls</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">cls</span>\n    <span class=\"pl-s1\">view</span>.<span class=\"pl-s1\">initkwargs</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">initkwargs</span>\n\n    <span class=\"pl-c\"># \u5bf9\u57fa\u4e8e\u4f1a\u8bdd\u7684\u8eab\u4efd\u9a8c\u8bc1\u8fdb\u884cCSRF\u6821\u9a8c\u3002</span>\n    <span class=\"pl-k\">return</span> <span class=\"pl-en\">csrf_exempt</span>(<span class=\"pl-s1\">view</span>)</pre></div>\n<p><code>ViewSetMixin</code> \u5141\u8bb8\u4e00\u4e2a\u89c6\u56fe\u7c7b\u5904\u7406\u591a\u4e2a\u540c\u79cdHTTP\u8bf7\u6c42\uff0c\u6bd4\u5982\u5217\u8868\u7684GET\u548c\u8be6\u60c5\u7684GET\u5206\u522b\u8f6c\u53d1\u5230\u81ea\u5b9a\u4e49\u7684 <code>.list()</code> \u548c <code>retrieve()</code> \u3002</p>\n<p>\u7a76\u5176\u539f\u56e0\u662f\u5728 <code>MeowViewSet.as_view()</code> \u65f6\u5c06 <code>MeowViewSet</code> \u5bf9\u8c61\u7684 <code>list</code> \u590d\u5236\u5230\u4e86 <code>get</code> \u4e0a\uff0c\u5bfc\u81f4\u867d\u7136 <code>.dispatch()</code> \u867d\u7136\u8fd8\u662f\u673a\u68b0\u5730\u8f6c\u53d1GET\u8bf7\u6c42\u5230 <code>.get()</code> \u3001POST\u8bf7\u6c42\u5230 <code>.post()</code> \u2026\u2026\uff0c\u4f46\u6b64\u65f6\u8c03\u7528\u7684 <code>.get()</code> \u5b9e\u9645\u4e0a\u5c31\u662f <code>.list()</code> \uff0c\u6545\u800c\u53ea\u8981\u521b\u5efa\u4e0d\u540c\u7684 <code>MeowViewSet</code> \u5bf9\u8c61\u5c31\u80fd\u5b9e\u73b0\u4e00\u53e5\u4ee3\u7801\u5206\u522b\u5904\u7406\u5217\u8868\u7684GET\u548c\u8be6\u60c5\u7684GET\u3002</p>\n<p>\u4ee3\u7801\u5927\u81f4\u5982\u4e0b\uff1a</p>\n<div class=\"highlight highlight-source-python\"><pre><span class=\"pl-c\"># \u7701\u7565\u4e86\u5f88\u591a\u7ec6\u8282...</span>\n<span class=\"pl-en\">@<span class=\"pl-s1\">classonlymethod</span></span>\n<span class=\"pl-k\">def</span> <span class=\"pl-en\">as_view</span>(<span class=\"pl-s1\">cls</span>, <span class=\"pl-s1\">actions</span><span class=\"pl-c1\">=</span><span class=\"pl-c1\">None</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">initkwargs</span>):\n\n    <span class=\"pl-k\">def</span> <span class=\"pl-en\">view</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>):\n        <span class=\"pl-s1\">self</span> <span class=\"pl-c1\">=</span> <span class=\"pl-en\">cls</span>(<span class=\"pl-c1\">**</span><span class=\"pl-s1\">initkwargs</span>)\n\n        <span class=\"pl-k\">if</span> <span class=\"pl-s\">'get'</span> <span class=\"pl-c1\">in</span> <span class=\"pl-s1\">actions</span> <span class=\"pl-c1\">and</span> <span class=\"pl-s\">'head'</span> <span class=\"pl-c1\">not</span> <span class=\"pl-c1\">in</span> <span class=\"pl-s1\">actions</span>:\n            <span class=\"pl-s1\">actions</span>[<span class=\"pl-s\">'head'</span>] <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">actions</span>[<span class=\"pl-s\">'get'</span>]\n\n        <span class=\"pl-c\"># \u4ece\u8fd9\u91cc\u53ef\u4ee5\u770b\u51fa\u6765\uff0c</span>\n        <span class=\"pl-c\"># actions \u7684\u952e\u662f HTTP \u65b9\u6cd5\u540d\uff0c\u503c\u5219\u662f\u5df2\u7ecf\u5b58\u5728\u7684\u65b9\u6cd5\u7684\u65b9\u6cd5\u540d\u3002</span>\n        <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">action_map</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">actions</span>\n        <span class=\"pl-k\">for</span> <span class=\"pl-s1\">method</span>, <span class=\"pl-s1\">action</span> <span class=\"pl-c1\">in</span> <span class=\"pl-s1\">actions</span>.<span class=\"pl-en\">items</span>():\n            <span class=\"pl-s1\">handler</span> <span class=\"pl-c1\">=</span> <span class=\"pl-en\">getattr</span>(<span class=\"pl-s1\">self</span>, <span class=\"pl-s1\">action</span>)\n            <span class=\"pl-en\">setattr</span>(<span class=\"pl-s1\">self</span>, <span class=\"pl-s1\">method</span>, <span class=\"pl-s1\">handler</span>)\n\n        <span class=\"pl-c\"># 3.14.0 \u7684\u7248\u672c\u4f9d\u7136\u6709\u8fd9\u6bb5\u4ee3\u7801\uff0c</span>\n        <span class=\"pl-c\"># \u611f\u89c9\u8c8c\u4f3c\u662f\u8ddf dispatch() \u91cc\u7684\u91cd\u590d\u4e86\u3002</span>\n        <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">request</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">request</span>\n        <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">args</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">args</span>\n        <span class=\"pl-s1\">self</span>.<span class=\"pl-s1\">kwargs</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">kwargs</span>\n\n        <span class=\"pl-k\">return</span> <span class=\"pl-s1\">self</span>.<span class=\"pl-en\">dispatch</span>(<span class=\"pl-s1\">request</span>, <span class=\"pl-c1\">*</span><span class=\"pl-s1\">args</span>, <span class=\"pl-c1\">**</span><span class=\"pl-s1\">kwargs</span>)\n\n    <span class=\"pl-s1\">view</span>.<span class=\"pl-s1\">cls</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">cls</span>\n    <span class=\"pl-s1\">view</span>.<span class=\"pl-s1\">initkwargs</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">initkwargs</span>\n    <span class=\"pl-s1\">view</span>.<span class=\"pl-s1\">actions</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">actions</span>\n    <span class=\"pl-k\">return</span> <span class=\"pl-en\">csrf_exempt</span>(<span class=\"pl-s1\">view</span>)</pre></div>\n", "title": "\u7839\u5c0f\u7ffc", "homeUrl": "httpa://github.com/aixcyi/", "postSourceUrl": "https://github.com/aixcyi/aixcyi.github.io/issues/2", "faviconUrl": "https://avatars.githubusercontent.com/u/75880483", "filingNum": "", "startSite": "08/07/2023", "i18n": "CN", "commentNum": 0, "repoName": "aixcyi/aixcyi.github.io", "GMEEK_VERSION": "v1.2"}</script>
+
+<style>
+h1 a:not([href]){color:inherit;text-decoration:none;vertical-align: bottom;font-size:40px;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 767px) {body {padding: 8px;}}
+</style>
+
+
+
+
 <body>
-<div class="markdown-body">
-    <h1>
-        <div id="postTitle"></div>
-        <div class="title-right">
-        <button id="buttonHome" class="btn btn-invisible circle" onclick="window.location.href='/'"><svg class="octicon octicon-sun" width="16" height="16"><path id="pathHome" fill-rule="evenodd"></path></svg></button>
-        
-        <button class="btn btn-invisible circle" onclick="gotoSource()" title="Issue"><svg class="octicon octicon-sun" width="16" height="16"><path id="pathIssue" fill-rule="evenodd"></path></svg></button>
-        
-        <button id="changeTheme" class="btn btn-invisible circle" onclick="modeSwitch()"><svg class="octicon octicon-sun" width="16" height="16"><path id="themeSwitch" fill-rule="evenodd"></path></svg></button>
-        </div>
-    </h1>
-    <div id="postBody"></div>
+    <div id="header">
+<h1>
+    <a>梳理DRF的视图(集)</a>
+</h1>
+<div class="title-right">
 
-    <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton"> </button>
-    <div class="comments" id="comments"></div>
+    <a href="/"><button id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd" d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"></path>
+        </svg>
+    </button></a>
 
-    <div class="footer">Copyright © <span id="year"></span> <a id="footerblogTitle" href=""></a> <p><span id="filingNum"></span><span id="runday"></span>Powered by <a href="https://github.com/Meekdai/Gmeek" target="_blank">Gmeek</a></p></div>
+    <a href="https://github.com/aixcyi/aixcyi.github.io/issues/2" target="_blank"><button class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+        </svg>
+    </button></a>
+
+    <button class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </button>
+
 </div>
-</body>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody">
+<p><a href="https://docs.python.org/zh-cn/3/index.html" rel="nofollow"><img src="https://camo.githubusercontent.com/f828e2ccbea9602aa54e417311e0d6e96f4719171c0f1051f93857692a8d0ced/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f507974686f6e2d3337373641423f6c6f676f3d707974686f6e266c6f676f436f6c6f723d4646443433422663616368655365636f6e64733d3836343030" alt="Static Badge" data-canonical-src="https://img.shields.io/badge/Python-3776AB?logo=python&amp;logoColor=FFD43B&amp;cacheSeconds=86400" style="max-width: 100%;"></a> <a href="https://docs.djangoproject.com/zh-hans/4.2/" rel="nofollow"><img src="https://camo.githubusercontent.com/9807661716c476dfaaf8c57eb82b42a2bacc19a9494c01cf8460bb3479596247/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446a616e676f2d3039324532303f6c6f676f3d646a616e676f2663616368655365636f6e64733d3836343030" alt="Django 文档" data-canonical-src="https://img.shields.io/badge/Django-092E20?logo=django&amp;cacheSeconds=86400" style="max-width: 100%;"></a> <a href="https://www.django-rest-framework.org/" rel="nofollow"><img src="https://camo.githubusercontent.com/5363d1e5a64fc6a2eebf8a684d12bb31477610ee04d0a12a826aa751efbe4837/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446a616e676f5f524553545f4672616d65776f726b2d3965303030303f63616368655365636f6e64733d3836343030" alt="Static Badge" data-canonical-src="https://img.shields.io/badge/Django_REST_Framework-9e0000?cacheSeconds=86400" style="max-width: 100%;"></a></p>
+<p>主要业务逻辑重写点集中在这几个类，它们通过单继承来扩展：</p>
+<ul>
+<li>
+<code>View</code> 只提供了基本的将HTTP请求转发到同名类方法处理的功能。</li>
+<li>
+<code>APIView</code> 提供了标头定制、权限检查、限流、请求内容解析定制、响应内容序列化定制、异常处理、接口版本管理等功能。</li>
+<li>
+<code>GenericAPIView</code> 提供了查询集、对象、序列化器的获取接口，以及分页接口。</li>
+</ul>
+<p>以上，所有HTTP请求都会按照HTTP方法转发给同名类方法来处理。<br>
+通过混入 <code>ViewSetMixin</code> 允许一个视图类处理多个同种HTTP请求，比如列表的GET和详情的GET分别转发到自定义的 <code>.list()</code> 和 <code>retrieve()</code> ，继而衍生出以下视图集类：</p>
+<ul>
+<li>
+<code>ViewSet</code> = <code>ViewSetMixin</code> + <code>APIView</code>
+</li>
+<li>
+<code>GenericViewSet</code> = <code>ViewSetMixin</code> + <code>GenericAPIView</code>
+</li>
+</ul>
+<p><code>GenericAPIView</code> 和 <code>GenericViewSet</code> 又可以通过混入以下几个基础的 Mix-in 衍生出一堆预制的视图类。</p>
+<ul>
+<li>
+<code>ListModelMixin</code> 通过 <code>.list()</code> 列出一份查询集，并调用 <code>GenericAPIView</code> 的 <code>.paginate_queryset()</code> 和 <code>.get_paginated_response()</code> 进行分页。</li>
+<li>
+<code>CreateModelMixin</code> 通过 <code>.create()</code> 创建一个模型并返回201，最终是通过 <code>.perform_create()</code> 用序列化器创建。</li>
+<li>
+<code>RetrieveModelMixin</code> 通过 <code>.retrieve()</code> 获取一个模型实例。</li>
+<li>
+<code>UpdateModelMixin</code> 通过 <code>.update()</code> 全量更新和 <code>.partial_update()</code> 部分更新一个模型实例，最终是通过 <code>.perform_update()</code> 用序列化器更新。</li>
+<li>
+<code>DestroyModelMixin</code> 通过 <code>.destroy()</code> 删除一个模型实例并返回无内容的204，最终是通过 <code>.perform_destroy()</code> 直接删除模型实例。</li>
+</ul>
+<p>下面通过两条主线来浅析视图(集)。</p>
+<h2><a id="user-content-dispatch线" class="anchor" aria-hidden="true" tabindex="-1" href="#dispatch线"><span aria-hidden="true" class="octicon octicon-link"></span></a>dispatch线</h2>
+<p>Django 的 <code>View</code> 通过 <code>.dispatch()</code> 将接收到的 <a href="https://docs.djangoproject.com/zh-hans/4.2/ref/request-response/#httprequest-objects" rel="nofollow"><code>HttpRequest</code></a> 转发到HTTP同名类方法处理并返回 <a href="https://docs.djangoproject.com/zh-hans/4.2/ref/request-response/#httpresponse-objects" rel="nofollow"><code>HttpResponse</code></a> ，流程如以下代码所示意：</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> <span class="pl-s1">django</span>.<span class="pl-s1">views</span>.<span class="pl-s1">generic</span>.<span class="pl-s1">base</span> <span class="pl-k">import</span> <span class="pl-v">View</span>
+
+<span class="pl-k">class</span> <span class="pl-v">MeowView</span>(<span class="pl-v">View</span>):
+
+    <span class="pl-c"># GET 请求将被转发到这个函数来处理</span>
+    <span class="pl-k">def</span> <span class="pl-en">get</span>(<span class="pl-s1">self</span>, <span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
+        <span class="pl-k">pass</span>
+
+    <span class="pl-c"># POST 请求将被转发到这里</span>
+    <span class="pl-k">def</span> <span class="pl-en">post</span>(<span class="pl-s1">self</span>, <span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
+        <span class="pl-k">pass</span>
+
+    <span class="pl-c"># OPTIONS、PUT、DELETE 等同理</span></pre></div>
+<p>方法的代码大致如下：</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># 省略了很多细节...</span>
+<span class="pl-k">def</span> <span class="pl-en">dispatch</span>(<span class="pl-s1">self</span>, <span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
+    <span class="pl-c"># 将请求转发到同名类方法来处理</span>
+    <span class="pl-k">if</span> <span class="pl-s1">request</span>.<span class="pl-s1">method</span>.<span class="pl-en">lower</span>() <span class="pl-c1">in</span> <span class="pl-s1">self</span>.<span class="pl-s1">http_method_names</span>:
+        <span class="pl-s1">handler</span> <span class="pl-c1">=</span> <span class="pl-en">getattr</span>(<span class="pl-s1">self</span>, <span class="pl-s1">request</span>.<span class="pl-s1">method</span>.<span class="pl-en">lower</span>(),
+                          <span class="pl-s1">self</span>.<span class="pl-s1">http_method_not_allowed</span>)
+    <span class="pl-c"># 如果找不到，或请求方法是非法的，</span>
+    <span class="pl-c"># 就转到 self.http_method_not_allowed() 处理。</span>
+    <span class="pl-k">else</span>:
+        <span class="pl-s1">handler</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-s1">http_method_not_allowed</span>
+    <span class="pl-k">return</span> <span class="pl-en">handler</span>(<span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)</pre></div>
+<p>DRF 的 <code>APIView</code> 重载了 <code>.dispatch()</code>，主要作用与前者一样，但添加了</p>
+<ul>
+<li>
+<code>.initialize_request()</code> 定制请求对象；</li>
+<li>
+<code>.initial()</code> 在处理前初始化；</li>
+<li>兜住处理时的异常，并交给 <code>.handle_exception()</code> 处理；</li>
+<li>
+<code>.finalize_response()</code> 定制响应对象</li>
+</ul>
+<p>几个特性。其代码大致如下：</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># 省略了很多细节...</span>
+<span class="pl-k">def</span> <span class="pl-en">dispatch</span>(<span class="pl-s1">self</span>, <span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
+    <span class="pl-c"># 初始化request的一些东西，比如身份验证。</span>
+    <span class="pl-s1">request</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">initialize_request</span>(<span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)
+
+    <span class="pl-c"># 附加到对象中。在不能或不便传参的地方使用视图对象来获得当前请求。</span>
+    <span class="pl-s1">self</span>.<span class="pl-s1">request</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>
+
+    <span class="pl-k">try</span>:
+        <span class="pl-c"># 初始化。身份验证、权限检查、频率限制就是在这里做的。</span>
+        <span class="pl-c"># 可以继承重写添加自己的初始化，比如控制查询集范围等。</span>
+        <span class="pl-s1">self</span>.<span class="pl-en">initial</span>(<span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)
+
+        <span class="pl-c"># 将请求转发到同名类方法来处理</span>
+        <span class="pl-k">if</span> <span class="pl-s1">request</span>.<span class="pl-s1">method</span>.<span class="pl-en">lower</span>() <span class="pl-c1">in</span> <span class="pl-s1">self</span>.<span class="pl-s1">http_method_names</span>:
+            <span class="pl-s1">handler</span> <span class="pl-c1">=</span> <span class="pl-en">getattr</span>(<span class="pl-s1">self</span>, <span class="pl-s1">request</span>.<span class="pl-s1">method</span>.<span class="pl-en">lower</span>(),
+                              <span class="pl-s1">self</span>.<span class="pl-s1">http_method_not_allowed</span>)
+        <span class="pl-c"># 如果找不到，或请求方法是非法的，</span>
+        <span class="pl-c"># 就转到 self.http_method_not_allowed() 处理。</span>
+        <span class="pl-k">else</span>:
+            <span class="pl-s1">handler</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-s1">http_method_not_allowed</span>
+        <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-en">handler</span>(<span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)
+
+    <span class="pl-c"># 处理异常。注意这里拦截的是 Exception，像 KeyboardInterrupt 这些是拦截不到的。</span>
+    <span class="pl-k">except</span> <span class="pl-v">Exception</span> <span class="pl-k">as</span> <span class="pl-s1">exc</span>:
+        <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">handle_exception</span>(<span class="pl-s1">exc</span>)
+
+    <span class="pl-c"># 整理response。在这里定制自己需要的返回值格式、响应码等等。</span>
+    <span class="pl-s1">self</span>.<span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">finalize_response</span>(<span class="pl-s1">request</span>, <span class="pl-s1">response</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)
+    <span class="pl-k">return</span> <span class="pl-s1">self</span>.<span class="pl-s1">response</span></pre></div>
+<h2><a id="user-content-as_view线" class="anchor" aria-hidden="true" tabindex="-1" href="#as_view线"><span aria-hidden="true" class="octicon octicon-link"></span></a>as_view线</h2>
+<p><code>.as_view()</code> 是将视图类的初始化、执行等操作存储在一个函数中（有点装饰器那味儿），供路由调用，也就是处理请求和响应的主入口（Main entry point for a request-response process.）。</p>
+<p><code>View</code> 的 <code>as_view()</code> 代码大致如下：</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># 省略了很多细节...</span>
+<span class="pl-en">@<span class="pl-s1">classonlymethod</span></span>
+<span class="pl-k">def</span> <span class="pl-en">as_view</span>(<span class="pl-s1">cls</span>, <span class="pl-c1">**</span><span class="pl-s1">initkwargs</span>):
+    <span class="pl-c"># 这个 initkwargs 是下面用来初始化 View 的参数，</span>
+    <span class="pl-c"># 键不能是HTTP请求方法，也不能是 View 没有的属性；</span>
+    <span class="pl-c"># 而回看 View 发现 __init__() 是自定义 self 的属性或方法，</span>
+    <span class="pl-c"># 因此 as_view() 实际上是允许我们</span>
+    <span class="pl-c"># 覆盖 View 对象原有的属性和方法（除了处理请求那部分）。</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">view</span>(<span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
+        <span class="pl-s1">self</span> <span class="pl-c1">=</span> <span class="pl-en">cls</span>(<span class="pl-c1">**</span><span class="pl-s1">initkwargs</span>)
+        <span class="pl-s1">self</span>.<span class="pl-en">setup</span>(<span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)
+        <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-en">hasattr</span>(<span class="pl-s1">self</span>, <span class="pl-s">'request'</span>):
+            <span class="pl-k">raise</span> <span class="pl-v">AttributeError</span>()
+        <span class="pl-k">return</span> <span class="pl-s1">self</span>.<span class="pl-en">dispatch</span>(<span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)
+
+    <span class="pl-s1">view</span>.<span class="pl-s1">view_class</span> <span class="pl-c1">=</span> <span class="pl-s1">cls</span>
+    <span class="pl-s1">view</span>.<span class="pl-s1">view_initkwargs</span> <span class="pl-c1">=</span> <span class="pl-s1">initkwargs</span>
+    <span class="pl-k">return</span> <span class="pl-s1">view</span></pre></div>
+<p>而 <code>APIView</code> 的 <code>as_view()</code> 除了要求 <strong>视图类</strong> 不能直接存储查询集之外，也仅仅充当一个基类的作用，并没有添加什么东西。</p>
+<p>代码大致如下：</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># 省略了很多细节...</span>
+<span class="pl-en">@<span class="pl-s1">classmethod</span></span>
+<span class="pl-k">def</span> <span class="pl-en">as_view</span>(<span class="pl-s1">cls</span>, <span class="pl-c1">**</span><span class="pl-s1">initkwargs</span>):
+
+    <span class="pl-s1">view</span> <span class="pl-c1">=</span> <span class="pl-en">super</span>().<span class="pl-en">as_view</span>(<span class="pl-c1">**</span><span class="pl-s1">initkwargs</span>)
+    <span class="pl-s1">view</span>.<span class="pl-s1">cls</span> <span class="pl-c1">=</span> <span class="pl-s1">cls</span>
+    <span class="pl-s1">view</span>.<span class="pl-s1">initkwargs</span> <span class="pl-c1">=</span> <span class="pl-s1">initkwargs</span>
+
+    <span class="pl-c"># 对基于会话的身份验证进行CSRF校验。</span>
+    <span class="pl-k">return</span> <span class="pl-en">csrf_exempt</span>(<span class="pl-s1">view</span>)</pre></div>
+<p><code>ViewSetMixin</code> 允许一个视图类处理多个同种HTTP请求，比如列表的GET和详情的GET分别转发到自定义的 <code>.list()</code> 和 <code>retrieve()</code> 。</p>
+<p>究其原因是在 <code>MeowViewSet.as_view()</code> 时将 <code>MeowViewSet</code> 对象的 <code>list</code> 复制到了 <code>get</code> 上，导致虽然 <code>.dispatch()</code> 虽然还是机械地转发GET请求到 <code>.get()</code> 、POST请求到 <code>.post()</code> ……，但此时调用的 <code>.get()</code> 实际上就是 <code>.list()</code> ，故而只要创建不同的 <code>MeowViewSet</code> 对象就能实现一句代码分别处理列表的GET和详情的GET。</p>
+<p>代码大致如下：</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># 省略了很多细节...</span>
+<span class="pl-en">@<span class="pl-s1">classonlymethod</span></span>
+<span class="pl-k">def</span> <span class="pl-en">as_view</span>(<span class="pl-s1">cls</span>, <span class="pl-s1">actions</span><span class="pl-c1">=</span><span class="pl-c1">None</span>, <span class="pl-c1">**</span><span class="pl-s1">initkwargs</span>):
+
+    <span class="pl-k">def</span> <span class="pl-en">view</span>(<span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
+        <span class="pl-s1">self</span> <span class="pl-c1">=</span> <span class="pl-en">cls</span>(<span class="pl-c1">**</span><span class="pl-s1">initkwargs</span>)
+
+        <span class="pl-k">if</span> <span class="pl-s">'get'</span> <span class="pl-c1">in</span> <span class="pl-s1">actions</span> <span class="pl-c1">and</span> <span class="pl-s">'head'</span> <span class="pl-c1">not</span> <span class="pl-c1">in</span> <span class="pl-s1">actions</span>:
+            <span class="pl-s1">actions</span>[<span class="pl-s">'head'</span>] <span class="pl-c1">=</span> <span class="pl-s1">actions</span>[<span class="pl-s">'get'</span>]
+
+        <span class="pl-c"># 从这里可以看出来，</span>
+        <span class="pl-c"># actions 的键是 HTTP 方法名，值则是已经存在的方法的方法名。</span>
+        <span class="pl-s1">self</span>.<span class="pl-s1">action_map</span> <span class="pl-c1">=</span> <span class="pl-s1">actions</span>
+        <span class="pl-k">for</span> <span class="pl-s1">method</span>, <span class="pl-s1">action</span> <span class="pl-c1">in</span> <span class="pl-s1">actions</span>.<span class="pl-en">items</span>():
+            <span class="pl-s1">handler</span> <span class="pl-c1">=</span> <span class="pl-en">getattr</span>(<span class="pl-s1">self</span>, <span class="pl-s1">action</span>)
+            <span class="pl-en">setattr</span>(<span class="pl-s1">self</span>, <span class="pl-s1">method</span>, <span class="pl-s1">handler</span>)
+
+        <span class="pl-c"># 3.14.0 的版本依然有这段代码，</span>
+        <span class="pl-c"># 感觉貌似是跟 dispatch() 里的重复了。</span>
+        <span class="pl-s1">self</span>.<span class="pl-s1">request</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>
+        <span class="pl-s1">self</span>.<span class="pl-s1">args</span> <span class="pl-c1">=</span> <span class="pl-s1">args</span>
+        <span class="pl-s1">self</span>.<span class="pl-s1">kwargs</span> <span class="pl-c1">=</span> <span class="pl-s1">kwargs</span>
+
+        <span class="pl-k">return</span> <span class="pl-s1">self</span>.<span class="pl-en">dispatch</span>(<span class="pl-s1">request</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)
+
+    <span class="pl-s1">view</span>.<span class="pl-s1">cls</span> <span class="pl-c1">=</span> <span class="pl-s1">cls</span>
+    <span class="pl-s1">view</span>.<span class="pl-s1">initkwargs</span> <span class="pl-c1">=</span> <span class="pl-s1">initkwargs</span>
+    <span class="pl-s1">view</span>.<span class="pl-s1">actions</span> <span class="pl-c1">=</span> <span class="pl-s1">actions</span>
+    <span class="pl-k">return</span> <span class="pl-en">csrf_exempt</span>(<span class="pl-s1">view</span>)</pre></div>
+
+</div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span> <a href="httpa://github.com/aixcyi/"> 砹小翼 </a><p>  <span id="runday"></span>Powered by <a href="https://github.com/Meekdai/Gmeek" target="_blank">Gmeek</a></p>
 
 <script>
-function addScript(url){
-    var script = document.createElement('script');
-    script.setAttribute('type','text/javascript');
-    script.setAttribute('src',url);
-    document.body.appendChild(script);
-}
-window.onload=function(){
-    addScript("https://cdn.jsdelivr.net/gh/Meekdai/Gmeek@"+blogBase["GMEEK_VERSION"]+"/icon.js" );
-    addScript("https://cdn.jsdelivr.net/gh/Meekdai/Gmeek@"+blogBase["GMEEK_VERSION"]+"/Gmeek.js" );
+if("08/07/2023"!=""){
+    var now=new Date();
+    var startSite=new Date("08/07/2023");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
 }
 </script>
+</div>
+</body>
+<script>
+var IconList={'post': 'M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25Zm1.75-.25a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25ZM3.5 6.25a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75Zm.75 2.25h4a.75.75 0 0 1 0 1.5h-4a.75.75 0 0 1 0-1.5Z', 'link': 'm7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z', 'about': 'M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99 0 .75.75 0 0 1-1.498-.07 6.004 6.004 0 0 1 3.431-5.142 3.999 3.999 0 1 1 5.123 0ZM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z', 'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'search': 'M15.7 13.3l-3.81-3.83A5.93 5.93 0 0 0 13 6c0-3.31-2.69-6-6-6S1 2.69 1 6s2.69 6 6 6c1.3 0 2.48-.41 3.47-1.11l3.83 3.81c.19.2.45.3.7.3.25 0 .52-.09.7-.3a.996.996 0 0 0 0-1.41v.01zM7 10.7c-2.59 0-4.7-2.11-4.7-4.7 0-2.59 2.11-4.7 4.7-4.7 2.59 0 4.7 2.11 4.7 4.7 0 2.59-2.11 4.7-4.7 4.7z', 'rss': 'M2.002 2.725a.75.75 0 0 1 .797-.699C8.79 2.42 13.58 7.21 13.974 13.201a.75.75 0 0 1-1.497.098 10.502 10.502 0 0 0-9.776-9.776.747.747 0 0 1-.7-.798ZM2.84 7.05h-.002a7.002 7.002 0 0 1 6.113 6.111.75.75 0 0 1-1.49.178 5.503 5.503 0 0 0-4.8-4.8.75.75 0 0 1 .179-1.489ZM2 13a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z', 'upload': 'M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Z M11.78 4.72a.749.749 0 1 1-1.06 1.06L8.75 3.811V9.5a.75.75 0 0 1-1.5 0V3.811L5.28 5.78a.749.749 0 1 1-1.06-1.06l3.25-3.25a.749.749 0 0 1 1.06 0l3.25 3.25Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z'};
+var utterancesLoad=0;
+if(localStorage.getItem("meek_theme")==null){localStorage.setItem("meek_theme","light");changeLight();}
+else if(localStorage.getItem("meek_theme")=="dark"){changeDark();}
+else if(localStorage.getItem("meek_theme")=="light"){changeLight();}
+
+function changeDark(){
+    document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="dark";
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList["moon"]);
+    document.getElementById("themeSwitch").parentNode.style.color="#00f0ff";
+    if(utterancesLoad==1){utterancesTheme("dark-blue");}
+}
+function changeLight(){
+    document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="light";
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList["sun"]);
+    document.getElementById("themeSwitch").parentNode.style.color="#ff5000";
+    if(utterancesLoad==1){utterancesTheme("github-light");}
+}
+function modeSwitch(){
+    if(document.getElementsByTagName("html")[0].attributes[0].value=="light"){changeDark();localStorage.setItem("meek_theme","dark");}
+    else{changeLight();localStorage.setItem("meek_theme","light");}
+}
+function utterancesTheme(theme){
+    const message = {type: 'set-theme',theme: theme};
+    const iframe = document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+}
+
+console.log("\n %c Gmeek v2.3 %c https://github.com/Meekdai/Gmeek \n\n", "color: #fff; background-image: linear-gradient(90deg, rgb(47, 172, 178) 0%, rgb(45, 190, 96) 100%); padding:5px 1px;", "background-image: linear-gradient(90deg, rgb(45, 190, 96) 0%, rgb(255, 255, 255) 100%); padding:5px 0;");
+</script>
+
+<script>
+
+cmButton=document.getElementById("cmButton");
+    span=document.createElement("span");
+    span.setAttribute("class","Counter");
+    span.innerHTML="6";
+    cmButton.appendChild(span);
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","aixcyi/aixcyi.github.io");
+    script.setAttribute("issue-term","title");
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else{script.setAttribute("theme","github-light");}
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+
+</script>
+
+
+
 
 </html>
