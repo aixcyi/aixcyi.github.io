@@ -14,11 +14,11 @@
 
 `GenericAPIView` 和 `GenericViewSet` 又可以通过混入以下几个基础的 Mix-in 衍生出一堆预制的视图类。
 
-- `ListModelMixin` 通过 `.list()` 列出一份查询集，并调用 `GenericAPIView` 的 `.paginate_queryset()` 和 `.get_paginated_response()` 进行分页。
-- `CreateModelMixin` 通过 `.create()` 创建一个模型并返回201，最终是通过 `.perform_create()` 用序列化器创建。
-- `RetrieveModelMixin` 通过 `.retrieve()` 获取一个模型实例。
-- `UpdateModelMixin` 通过 `.update()` 全量更新和 `.partial_update()` 部分更新一个模型实例，最终是通过 `.perform_update()` 用序列化器更新。
-- `DestroyModelMixin` 通过 `.destroy()` 删除一个模型实例并返回无内容的204，最终是通过 `.perform_destroy()` 直接删除模型实例。
+- **ListModelMixin** 通过 `.list()` 列出一份查询集，并调用 `GenericAPIView` 的 `.paginate_queryset()` 和 `.get_paginated_response()` 进行分页。
+- **CreateModelMixin** 通过 `.create()` 创建一个模型并返回201，最终是通过 `.perform_create()` 用序列化器创建。
+- **RetrieveModelMixin** 通过 `.retrieve()` 获取一个模型实例。
+- **UpdateModelMixin** 通过 `.update()` 全量更新和 `.partial_update()` 部分更新一个模型实例，最终是通过 `.perform_update()` 用序列化器更新。
+- **DestroyModelMixin** 通过 `.destroy()` 删除一个模型实例并返回无内容的204，最终是通过 `.perform_destroy()` 直接删除模型实例。
 
 下面通过两条主线来浅析视图(集)。
 
