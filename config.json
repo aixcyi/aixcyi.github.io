@@ -5,13 +5,13 @@
     "homeUrl":"https://github.com/aixcyi/",
     "avatarUrl":"https://avatars.githubusercontent.com/u/75880483",
     "faviconUrl":"https://avatars.githubusercontent.com/u/75880483",
-    "email":"",
-    "startSite":"08/07/2023",
-    "filingNum":"",
-    "onePageListNum":15,
     "singlePage":["link","about"],
+    "startSite":"08/07/2023",
+    "onePageListNum":15,
     "commentLabelColor":"#006b75",
     "yearColorList":["#0d1117","#0d1117"],
     "i18n":"CN",
-    "GMEEK_VERSION":"v2.3"
+    "dayTheme":"light_colorblind",
+    "nightTheme":"dark_colorblind",
+    "GMEEK_VERSION":"v2.4"
 }
