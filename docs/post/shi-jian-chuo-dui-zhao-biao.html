@@ -13,7 +13,7 @@
     </script>
     
 <title>时间戳对照表</title>
-
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 </head>
 <style>
@@ -79,989 +79,1384 @@ h1 a:not([href]){color:inherit;text-decoration:none;vertical-align: bottom;font-
 </div>
     <div id="content">
 <div class="markdown-body" id="postBody">
-<h1><a id="user-content-时间戳对照表" class="anchor" aria-hidden="true" tabindex="-1" href="#时间戳对照表"><span aria-hidden="true" class="octicon octicon-link"></span></a>时间戳对照表</h1>
 <p>时间戳，是一类以 <strong>1970年1月1日</strong> 为起点（epoch）的，按秒、毫秒或天为单位计数的整数或小数，本质上是时间差值。</p>
+<h4><a id="user-content-食用指南" class="anchor" aria-hidden="true" tabindex="-1" href="#食用指南"><span aria-hidden="true" class="octicon octicon-link"></span></a>食用指南</h4>
 <ul>
 <li>当需要使用字符串存储时间戳时，下表的 <strong>指数</strong> 代表了存储对应时长所需的字符个数，<strong>底数</strong> 对应了字符串中整数的进位制。</li>
 <li>当需要将时间戳嵌入整数时，以 2 为底的数的指数代表了存储对应时长所需的比特数，以 10 为底的数的指数代表了整数转化为字符串时的字符个数。</li>
 </ul>
-<p>注意事项：</p>
+<h4><a id="user-content-注意事项" class="anchor" aria-hidden="true" tabindex="-1" href="#注意事项"><span aria-hidden="true" class="octicon octicon-link"></span></a>注意事项</h4>
 <ul>
-<li>时间差上限不是越大越好，请综合考量。</li>
+<li>表中时间差均不包含闰日和闰秒；一年按 365 天计。</li>
 <li>下表只提供了底数的整数次幂，如果使用 <strong>有符号整数</strong> 等类型来存储，实际存储时长要在对应上限减去 1 单位时间差。比如16位有符号整数存储日戳，最大只能存储 2<sup>15</sup> - 1 = 89 年 282 天。</li>
 <li>时间戳本质上是两个时刻之间的差值，因此务必将 <em>当时</em> 与 <em>起点</em> 设为同一个时区的时间。</li>
 </ul>
-<h2><a id="user-content-日戳" class="anchor" aria-hidden="true" tabindex="-1" href="#日戳"><span aria-hidden="true" class="octicon octicon-link"></span></a>日戳</h2>
+<h2><a id="user-content-毫秒戳" class="anchor" aria-hidden="true" tabindex="-1" href="#毫秒戳"><span aria-hidden="true" class="octicon octicon-link"></span></a>毫秒戳</h2>
 <blockquote>
-<p>一般是以天为单位的整数。</p>
+<p>以毫秒为单位的时间戳，一般是整数。</p>
 </blockquote>
 <table>
 <thead>
 <tr>
-<th>时间戳</th>
-<th></th>
-<th></th>
-<th></th>
-<th>时间差（时长）</th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="right">时间差</th>
+<th>GMT+0 时刻</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td>2<sup>19</sup>
+<td align="center"></td>
+<td align="center">2<sup>50</sup>
 </td>
-<td></td>
-<td></td>
-<td>（超出 Python <code>datetime.fromtimestamp()</code> 处理范围）</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">3,5702 年 18 天 22:07:22.624</td>
+<td>-</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>18</sup>
+<td align="center">10<sup>15</sup>
 </td>
-<td></td>
-<td>8<sup>6</sup>
-</td>
-<td>718 年 74 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">3,1709 年 289 天 01:46:40.000</td>
+<td>-</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>17</sup>
+<td align="center"></td>
+<td align="center">2<sup>49</sup>
 </td>
-<td></td>
-<td></td>
-<td>359 年 37 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">1,7851 年 9 天 11:03:41.312</td>
+<td>-</td>
 </tr>
 <tr>
-<td>10<sup>5</sup>
+<td align="center"></td>
+<td align="center">2<sup>48</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>273 年 355 天</td>
+<td align="center">16<sup>12</sup>
+</td>
+<td align="center">8<sup>16</sup>
+</td>
+<td align="right">8925 年 187 天 05:31:50.656</td>
+<td>-</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>16</sup>
+<td align="center"></td>
+<td align="center">2<sup>47</sup>
 </td>
-<td>16<sup>4</sup>
-</td>
-<td></td>
-<td>179 年 201 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">4462 年 276 天 02:45:55.328</td>
+<td>6429-10-17 02:45:55.328</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>15</sup>
+<td align="center">10<sup>14</sup>
 </td>
-<td></td>
-<td>8<sup>5</sup>
-</td>
-<td>89 年 283 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">3170 年 357 天 09:46:40.000</td>
+<td>5138-11-16 09:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>14</sup>
+<td align="center"></td>
+<td align="center">2<sup>46</sup>
 </td>
-<td></td>
-<td></td>
-<td>44 年 324 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">2231 年 138 天 01:22:57.664</td>
+<td>4199-11-24 01:22:57.664</td>
 </tr>
 <tr>
-<td>10<sup>4</sup>
+<td align="center"></td>
+<td align="center">2<sup>45</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>27 年 145 天</td>
+<td align="center"></td>
+<td align="center">8<sup>15</sup>
+</td>
+<td align="right">1115 年 251 天 12:41:28.832</td>
+<td>3084-12-12 12:41:28.832</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>13</sup>
+<td align="center"></td>
+<td align="center">2<sup>44</sup>
 </td>
-<td></td>
-<td></td>
-<td>22 年 162 天</td>
+<td align="center">16<sup>11</sup>
+</td>
+<td align="center"></td>
+<td align="right">557 年 308 天 06:20:44.416</td>
+<td>2527-06-23 06:20:44.416</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>12</sup>
+<td align="center">10<sup>13</sup>
 </td>
-<td>16<sup>3</sup>
-</td>
-<td>8<sup>4</sup>
-</td>
-<td>11 年 81 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">317 年 35 天 17:46:40.000</td>
+<td>2286-11-20 17:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>11</sup>
+<td align="center"></td>
+<td align="center">2<sup>43</sup>
 </td>
-<td></td>
-<td></td>
-<td>5 年 223 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">278 年 336 天 15:10:22.208</td>
+<td>2248-09-26 15:10:22.208</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>10</sup>
+<td align="center"></td>
+<td align="center">2<sup>42</sup>
 </td>
-<td></td>
-<td></td>
-<td>2 年 294 天</td>
+<td align="center"></td>
+<td align="center">8<sup>14</sup>
+</td>
+<td align="right">139 年 168 天 07:35:11.104</td>
+<td>2109-05-15 07:35:11.104</td>
 </tr>
 <tr>
-<td>10<sup>3</sup>
+<td align="center"></td>
+<td align="center">2<sup>41</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>2 年 270 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">69 年 266 天 15:47:35.552</td>
+<td>2039-09-07 15:47:35.552</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>9</sup>
+<td align="center"></td>
+<td align="center">2<sup>40</sup>
 </td>
-<td></td>
-<td>8<sup>3</sup>
+<td align="center">16<sup>10</sup>
 </td>
-<td>1 年 147 天</td>
+<td align="center"></td>
+<td align="right">34 年 315 天 19:53:47.776</td>
+<td>2004-11-03 19:53:47.776</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>8</sup>
+<td align="center">10<sup>12</sup>
 </td>
-<td>16<sup>2</sup>
-</td>
-<td></td>
-<td>256 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">31 年 259 天 01:46:40.000</td>
+<td>2001-09-09 01:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>7</sup>
+<td align="center"></td>
+<td align="center">2<sup>39</sup>
 </td>
-<td></td>
-<td></td>
-<td>128 天</td>
+<td align="center"></td>
+<td align="center">8<sup>13</sup>
+</td>
+<td align="right">17 年 157 天 21:56:53.888</td>
+<td>1987-06-03 21:56:53.888</td>
 </tr>
 <tr>
-<td>10<sup>2</sup>
+<td align="center"></td>
+<td align="center">2<sup>38</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>100 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">8 年 261 天 10:58:26.944</td>
+<td>1978-09-17 10:58:26.944</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>6</sup>
+<td align="center"></td>
+<td align="center">2<sup>37</sup>
 </td>
-<td></td>
-<td>8<sup>2</sup>
-</td>
-<td>64 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">4 年 130 天 17:29:13.472</td>
+<td>1974-05-10 17:29:13.472</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>5</sup>
+<td align="center">10<sup>11</sup>
 </td>
-<td></td>
-<td></td>
-<td>32 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">3 年 62 天 09:46:40.000</td>
+<td>1973-03-03 09:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>4</sup>
+<td align="center"></td>
+<td align="center">2<sup>36</sup>
 </td>
-<td>16<sup>1</sup>
+<td align="center">16<sup>9</sup>
 </td>
-<td></td>
-<td>16 天</td>
+<td align="center">8<sup>12</sup>
+</td>
+<td align="right">2 年 65 天 08:44:36.736</td>
+<td>1972-03-06 08:44:36.736</td>
 </tr>
 <tr>
-<td>10<sup>1</sup>
+<td align="center"></td>
+<td align="center">2<sup>35</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>10 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">1 年 32 天 16:22:18.368</td>
+<td>1971-02-02 16:22:18.368</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>3</sup>
+<td align="center"></td>
+<td align="center">2<sup>34</sup>
 </td>
-<td></td>
-<td>8<sup>1</sup>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">198 天 20:11:09.184</td>
+<td>1970-07-18 20:11:09.184</td>
+</tr>
+<tr>
+<td align="center">10<sup>10</sup>
 </td>
-<td>8 天</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">115 天 17:46:40.000</td>
+<td>1970-04-26 17:46:40</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>33</sup>
+</td>
+<td align="center"></td>
+<td align="center">8<sup>11</sup>
+</td>
+<td align="right">99 天 10:05:34.592</td>
+<td>1970-04-10 10:05:34.592</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>32</sup>
+</td>
+<td align="center">16<sup>8</sup>
+</td>
+<td align="center"></td>
+<td align="right">49 天 17:02:47.296</td>
+<td>1970-02-19 17:02:47.296</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>31</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">24 天 20:31:23.648</td>
+<td>1970-01-25 20:31:23.648</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>30</sup>
+</td>
+<td align="center"></td>
+<td align="center">8<sup>10</sup>
+</td>
+<td align="right">12 天 10:15:41.824</td>
+<td>1970-01-13 10:15:41.824</td>
+</tr>
+<tr>
+<td align="center">10<sup>9</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">11 天 13:46:40.000</td>
+<td>1970-01-12 13:46:40</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>29</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">6 天 05:07:50.912</td>
+<td>1970-01-07 05:07:50.912</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>28</sup>
+</td>
+<td align="center">16<sup>7</sup>
+</td>
+<td align="center"></td>
+<td align="right">3 天 02:33:55.456</td>
+<td>1970-01-04 02:33:55.456</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>27</sup>
+</td>
+<td align="center"></td>
+<td align="center">8<sup>9</sup>
+</td>
+<td align="right">1 天 13:16:57.728</td>
+<td>1970-01-02 13:16:57.728</td>
+</tr>
+<tr>
+<td align="center">10<sup>8</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">1 天 03:46:40.000</td>
+<td>1970-01-02 03:46:40</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>26</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">18:38:28.864</td>
+<td>1970-01-01 18:38:28.864</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>25</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">09:19:14.432</td>
+<td>1970-01-01 09:19:14.432</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>24</sup>
+</td>
+<td align="center">16<sup>6</sup>
+</td>
+<td align="center">8<sup>8</sup>
+</td>
+<td align="right">04:39:37.216</td>
+<td>1970-01-01 04:39:37.216</td>
+</tr>
+<tr>
+<td align="center">10<sup>7</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">02:46:40.000</td>
+<td>1970-01-01 02:46:40</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>23</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">02:19:48.608</td>
+<td>1970-01-01 02:19:48.608</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>22</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">01:09:54.304</td>
+<td>1970-01-01 01:09:54.304</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>21</sup>
+</td>
+<td align="center"></td>
+<td align="center">8<sup>7</sup>
+</td>
+<td align="right">00:34:57.152</td>
+<td>1970-01-01 00:34:57.152</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>20</sup>
+</td>
+<td align="center">16<sup>5</sup>
+</td>
+<td align="center"></td>
+<td align="right">00:17:28.576</td>
+<td>1970-01-01 00:17:28.576</td>
+</tr>
+<tr>
+<td align="center">10<sup>6</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:16:40.000</td>
+<td>1970-01-01 00:16:40</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>19</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:08:44.288</td>
+<td>1970-01-01 00:08:44.288</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>18</sup>
+</td>
+<td align="center"></td>
+<td align="center">8<sup>6</sup>
+</td>
+<td align="right">00:04:22.144</td>
+<td>1970-01-01 00:04:22.144</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>17</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:02:11.072</td>
+<td>1970-01-01 00:02:11.072</td>
+</tr>
+<tr>
+<td align="center">10<sup>5</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:01:40.000</td>
+<td>1970-01-01 00:01:40</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>16</sup>
+</td>
+<td align="center">16<sup>4</sup>
+</td>
+<td align="center"></td>
+<td align="right">00:01:05.536</td>
+<td>1970-01-01 00:01:05.536</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>15</sup>
+</td>
+<td align="center"></td>
+<td align="center">8<sup>5</sup>
+</td>
+<td align="right">00:00:32.768</td>
+<td>1970-01-01 00:00:32.768</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>14</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:00:16.384</td>
+<td>1970-01-01 00:00:16.384</td>
+</tr>
+<tr>
+<td align="center">10<sup>4</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:00:10.000</td>
+<td>1970-01-01 00:00:10</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>13</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:00:08.192</td>
+<td>1970-01-01 00:00:08.192</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>12</sup>
+</td>
+<td align="center">16<sup>3</sup>
+</td>
+<td align="center">8<sup>4</sup>
+</td>
+<td align="right">00:00:04.096</td>
+<td>1970-01-01 00:00:04.096</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>11</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:00:02.048</td>
+<td>1970-01-01 00:00:02.048</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>10</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:00:01.024</td>
+<td>1970-01-01 00:00:01.024</td>
 </tr>
 </tbody>
 </table>
 <h2><a id="user-content-秒戳" class="anchor" aria-hidden="true" tabindex="-1" href="#秒戳"><span aria-hidden="true" class="octicon octicon-link"></span></a>秒戳</h2>
 <blockquote>
-<p>一般是以秒为单位的整数或小数。</p>
+<p>以秒为单位的时间戳，一般是整数或小数。</p>
 </blockquote>
 <table>
 <thead>
 <tr>
-<th>时间戳</th>
-<th></th>
-<th></th>
-<th></th>
-<th>时间差（时长）</th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="right">时间差</th>
+<th>GMT+0 时刻</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td>2<sup>35</sup>
+<td align="center"></td>
+<td align="center">2<sup>40</sup>
 </td>
-<td></td>
-<td></td>
-<td>（超出 Python <code>datetime.fromtimestamp()</code> 处理范围）</td>
+<td align="center">16<sup>10</sup>
+</td>
+<td align="center"></td>
+<td align="right">3,4865 年 104 天 00:36:16</td>
+<td>-</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>34</sup>
+<td align="center">10<sup>12</sup>
 </td>
-<td></td>
-<td></td>
-<td>544 年 281 天 + 1:53:04</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">3,1709 年 289 天 01:46:40</td>
+<td>-</td>
 </tr>
 <tr>
-<td>10<sup>10</sup>
+<td align="center"></td>
+<td align="center">2<sup>39</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>317 年 35 天 + 17:46:40</td>
+<td align="center"></td>
+<td align="center">8<sup>13</sup>
+</td>
+<td align="right">1,7432 年 234 天 12:18:08</td>
+<td>-</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>33</sup>
+<td align="center"></td>
+<td align="center">2<sup>38</sup>
 </td>
-<td></td>
-<td>8<sup>11</sup>
-</td>
-<td>272 年 140 天 + 12:56:32</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">8716 年 117 天 06:09:04</td>
+<td>-</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>32</sup>
+<td align="center"></td>
+<td align="center">2<sup>37</sup>
 </td>
-<td>16<sup>8</sup>
-</td>
-<td></td>
-<td>136 年 70 天 + 6:28:16</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">4358 年 58 天 15:04:32</td>
+<td>6325-04-08 15:04:32</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>31</sup>
+<td align="center">10<sup>11</sup>
 </td>
-<td></td>
-<td></td>
-<td>68 年 35 天 + 3:14:08</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">3170 年 357 天 09:46:40</td>
+<td>5138-11-16 09:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>30</sup>
+<td align="center"></td>
+<td align="center">2<sup>36</sup>
 </td>
-<td></td>
-<td>8<sup>10</sup>
+<td align="center">16<sup>9</sup>
 </td>
-<td>34 年 17 天 + 13:37:04</td>
+<td align="center">8<sup>12</sup>
+</td>
+<td align="right">2179 年 29 天 07:32:16</td>
+<td>4147-08-20 07:32:16</td>
 </tr>
 <tr>
-<td>10<sup>9</sup>
+<td align="center"></td>
+<td align="center">2<sup>35</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>31 年 259 天 + 1:46:40</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">1089 年 197 天 03:46:08</td>
+<td>3058-10-26 03:46:08</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>29</sup>
+<td align="center"></td>
+<td align="center">2<sup>34</sup>
 </td>
-<td></td>
-<td></td>
-<td>17 年 8 天 + 18:48:32</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">544 年 281 天 01:53:04</td>
+<td>2514-05-30 01:53:04</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>28</sup>
+<td align="center">10<sup>10</sup>
 </td>
-<td>16<sup>7</sup>
-</td>
-<td></td>
-<td>8 年 186 天 + 21:24:16</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">317 年 35 天 17:46:40</td>
+<td>2286-11-20 17:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>27</sup>
+<td align="center"></td>
+<td align="center">2<sup>33</sup>
 </td>
-<td></td>
-<td>8<sup>9</sup>
+<td align="center"></td>
+<td align="center">8<sup>11</sup>
 </td>
-<td>4 年 93 天 + 10:42:08</td>
+<td align="right">272 年 140 天 12:56:32</td>
+<td>2242-03-16 12:56:32</td>
 </tr>
 <tr>
-<td>10<sup>8</sup>
+<td align="center"></td>
+<td align="center">2<sup>32</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>3 年 62 天 + 9:46:40</td>
+<td align="center">16<sup>8</sup>
+</td>
+<td align="center"></td>
+<td align="right">136 年 70 天 06:28:16</td>
+<td>2106-02-07 06:28:16</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>26</sup>
+<td align="center"></td>
+<td align="center">2<sup>31</sup>
 </td>
-<td></td>
-<td></td>
-<td>2 年 46 天 + 17:21:04</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">68 年 35 天 03:14:08</td>
+<td>2038-01-19 03:14:08</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>25</sup>
+<td align="center"></td>
+<td align="center">2<sup>30</sup>
 </td>
-<td></td>
-<td></td>
-<td>1 年 23 天 + 8:40:32</td>
+<td align="center"></td>
+<td align="center">8<sup>10</sup>
+</td>
+<td align="right">34 年 17 天 13:37:04</td>
+<td>2004-01-10 13:37:04</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>24</sup>
+<td align="center">10<sup>9</sup>
 </td>
-<td>16<sup>6</sup>
-</td>
-<td>8<sup>8</sup>
-</td>
-<td>194 天 + 4:20:16</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">31 年 259 天 01:46:40</td>
+<td>2001-09-09 01:46:40</td>
 </tr>
 <tr>
-<td>10<sup>7</sup>
+<td align="center"></td>
+<td align="center">2<sup>29</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>115 天 + 17:46:40</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">17 年 8 天 18:48:32</td>
+<td>1987-01-05 18:48:32</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>23</sup>
+<td align="center"></td>
+<td align="center">2<sup>28</sup>
 </td>
-<td></td>
-<td></td>
-<td>97 天 + 2:10:08</td>
+<td align="center">16<sup>7</sup>
+</td>
+<td align="center"></td>
+<td align="right">8 年 186 天 21:24:16</td>
+<td>1978-07-04 21:24:16</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>22</sup>
+<td align="center"></td>
+<td align="center">2<sup>27</sup>
 </td>
-<td></td>
-<td></td>
-<td>48 天 + 13:05:04</td>
+<td align="center"></td>
+<td align="center">8<sup>9</sup>
+</td>
+<td align="right">4 年 93 天 10:42:08</td>
+<td>1974-04-03 10:42:08</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>21</sup>
+<td align="center">10<sup>8</sup>
 </td>
-<td></td>
-<td>8<sup>7</sup>
-</td>
-<td>24 天 + 6:32:32</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">3 年 62 天 09:46:40</td>
+<td>1973-03-03 09:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>20</sup>
+<td align="center"></td>
+<td align="center">2<sup>26</sup>
 </td>
-<td>16<sup>5</sup>
-</td>
-<td></td>
-<td>12 天 + 3:16:16</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">2 年 46 天 17:21:04</td>
+<td>1972-02-16 17:21:04</td>
 </tr>
 <tr>
-<td>10<sup>6</sup>
+<td align="center"></td>
+<td align="center">2<sup>25</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>11 天 + 13:46:40</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">1 年 23 天 08:40:32</td>
+<td>1971-01-24 08:40:32</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>19</sup>
+<td align="center"></td>
+<td align="center">2<sup>24</sup>
 </td>
-<td></td>
-<td></td>
-<td>6 天 + 1:38:08</td>
+<td align="center">16<sup>6</sup>
+</td>
+<td align="center">8<sup>8</sup>
+</td>
+<td align="right">194 天 04:20:16</td>
+<td>1970-07-14 04:20:16</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>18</sup>
+<td align="center">10<sup>7</sup>
 </td>
-<td></td>
-<td>8<sup>6</sup>
-</td>
-<td>3 天 + 0:49:04</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">115 天 17:46:40</td>
+<td>1970-04-26 17:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>17</sup>
+<td align="center"></td>
+<td align="center">2<sup>23</sup>
 </td>
-<td></td>
-<td></td>
-<td>1 天 + 12:24:32</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">97 天 02:10:08</td>
+<td>1970-04-08 02:10:08</td>
 </tr>
 <tr>
-<td>10<sup>5</sup>
+<td align="center"></td>
+<td align="center">2<sup>22</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>1 天 + 3:46:40</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">48 天 13:05:04</td>
+<td>1970-02-18 13:05:04</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>16</sup>
+<td align="center"></td>
+<td align="center">2<sup>21</sup>
 </td>
-<td>16<sup>4</sup>
+<td align="center"></td>
+<td align="center">8<sup>7</sup>
 </td>
-<td></td>
-<td>18:12:16</td>
+<td align="right">24 天 06:32:32</td>
+<td>1970-01-25 06:32:32</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>15</sup>
+<td align="center"></td>
+<td align="center">2<sup>20</sup>
 </td>
-<td></td>
-<td>8<sup>5</sup>
+<td align="center">16<sup>5</sup>
 </td>
-<td>9:06:08</td>
+<td align="center"></td>
+<td align="right">12 天 03:16:16</td>
+<td>1970-01-13 03:16:16</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>14</sup>
+<td align="center">10<sup>6</sup>
 </td>
-<td></td>
-<td></td>
-<td>4:33:04</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">11 天 13:46:40</td>
+<td>1970-01-12 13:46:40</td>
 </tr>
 <tr>
-<td>10<sup>4</sup>
+<td align="center"></td>
+<td align="center">2<sup>19</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>2:46:40</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">6 天 01:38:08</td>
+<td>1970-01-07 01:38:08</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>13</sup>
+<td align="center"></td>
+<td align="center">2<sup>18</sup>
 </td>
-<td></td>
-<td></td>
-<td>2:16:32</td>
+<td align="center"></td>
+<td align="center">8<sup>6</sup>
+</td>
+<td align="right">3 天 00:49:04</td>
+<td>1970-01-04 00:49:04</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>12</sup>
+<td align="center"></td>
+<td align="center">2<sup>17</sup>
 </td>
-<td>16<sup>3</sup>
-</td>
-<td>8<sup>4</sup>
-</td>
-<td>1:08:16</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">1 天 12:24:32</td>
+<td>1970-01-02 12:24:32</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>11</sup>
+<td align="center">10<sup>5</sup>
 </td>
-<td></td>
-<td></td>
-<td>0:34:08</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">1 天 03:46:40</td>
+<td>1970-01-02 03:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>10</sup>
+<td align="center"></td>
+<td align="center">2<sup>16</sup>
 </td>
-<td></td>
-<td></td>
-<td>0:17:04</td>
+<td align="center">16<sup>4</sup>
+</td>
+<td align="center"></td>
+<td align="right">18:12:16</td>
+<td>1970-01-01 18:12:16</td>
 </tr>
 <tr>
-<td>10<sup>3</sup>
+<td align="center"></td>
+<td align="center">2<sup>15</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>0:16:40</td>
+<td align="center"></td>
+<td align="center">8<sup>5</sup>
+</td>
+<td align="right">09:06:08</td>
+<td>1970-01-01 09:06:08</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>9</sup>
+<td align="center"></td>
+<td align="center">2<sup>14</sup>
 </td>
-<td></td>
-<td>8<sup>3</sup>
-</td>
-<td>0:08:32</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">04:33:04</td>
+<td>1970-01-01 04:33:04</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>8</sup>
+<td align="center">10<sup>4</sup>
 </td>
-<td>16<sup>2</sup>
-</td>
-<td></td>
-<td>0:04:16</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">02:46:40</td>
+<td>1970-01-01 02:46:40</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>7</sup>
+<td align="center"></td>
+<td align="center">2<sup>13</sup>
 </td>
-<td></td>
-<td></td>
-<td>0:02:08</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">02:16:32</td>
+<td>1970-01-01 02:16:32</td>
 </tr>
 <tr>
-<td>10<sup>2</sup>
+<td align="center"></td>
+<td align="center">2<sup>12</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>0:01:40</td>
+<td align="center">16<sup>3</sup>
+</td>
+<td align="center">8<sup>4</sup>
+</td>
+<td align="right">01:08:16</td>
+<td>1970-01-01 01:08:16</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>6</sup>
+<td align="center"></td>
+<td align="center">2<sup>11</sup>
 </td>
-<td></td>
-<td>8<sup>2</sup>
-</td>
-<td>0:01:04</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:34:08</td>
+<td>1970-01-01 00:34:08</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>5</sup>
+<td align="center"></td>
+<td align="center">2<sup>10</sup>
 </td>
-<td></td>
-<td></td>
-<td>0:00:32</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:17:04</td>
+<td>1970-01-01 00:17:04</td>
+</tr>
+<tr>
+<td align="center">10<sup>3</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:16:40</td>
+<td>1970-01-01 00:16:40</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>9</sup>
+</td>
+<td align="center"></td>
+<td align="center">8<sup>3</sup>
+</td>
+<td align="right">00:08:32</td>
+<td>1970-01-01 00:08:32</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>8</sup>
+</td>
+<td align="center">16<sup>2</sup>
+</td>
+<td align="center"></td>
+<td align="right">00:04:16</td>
+<td>1970-01-01 00:04:16</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>7</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:02:08</td>
+<td>1970-01-01 00:02:08</td>
+</tr>
+<tr>
+<td align="center">10<sup>2</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:01:40</td>
+<td>1970-01-01 00:01:40</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>6</sup>
+</td>
+<td align="center"></td>
+<td align="center">8<sup>2</sup>
+</td>
+<td align="right">00:01:04</td>
+<td>1970-01-01 00:01:04</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>5</sup>
+</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">00:00:32</td>
+<td>1970-01-01 00:00:32</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">2<sup>4</sup>
+</td>
+<td align="center">16<sup>1</sup>
+</td>
+<td align="center"></td>
+<td align="right">00:00:16</td>
+<td>1970-01-01 00:00:16</td>
 </tr>
 </tbody>
 </table>
-<h2><a id="user-content-毫秒戳" class="anchor" aria-hidden="true" tabindex="-1" href="#毫秒戳"><span aria-hidden="true" class="octicon octicon-link"></span></a>毫秒戳</h2>
+<h2><a id="user-content-日戳" class="anchor" aria-hidden="true" tabindex="-1" href="#日戳"><span aria-hidden="true" class="octicon octicon-link"></span></a>日戳</h2>
 <blockquote>
-<p>一般是以毫秒为单位的整数。</p>
+<p>以天为单位的时间戳，一般是整数。</p>
 </blockquote>
 <table>
 <thead>
 <tr>
-<th>时间戳</th>
-<th></th>
-<th></th>
-<th></th>
-<th>时间差（时长）</th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="right">时间差</th>
+<th align="left">GMT+0 时刻</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td>2<sup>45</sup>
+<td align="center">10<sup>7</sup>
 </td>
-<td></td>
-<td>8<sup>15</sup>
-</td>
-<td>（超出 Python <code>datetime.fromtimestamp()</code> 处理范围）</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">2,7397 年 95 天</td>
+<td align="left">-</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>44</sup>
+<td align="center"></td>
+<td align="center">2<sup>23</sup>
 </td>
-<td>16<sup>3</sup>
-</td>
-<td></td>
-<td>557 年 308 天 + 6:20:44.416</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">2,2982 年 178 天</td>
+<td align="left">-</td>
 </tr>
 <tr>
-<td>10<sup>13</sup>
+<td align="center"></td>
+<td align="center">2<sup>22</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>317 年 35 天 + 17:46:40</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">1,1491 年 89 天</td>
+<td align="left">-</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>43</sup>
+<td align="center"></td>
+<td align="center">2<sup>21</sup>
 </td>
-<td></td>
-<td></td>
-<td>278 年 336 天 + 15:10:22.208</td>
+<td align="center"></td>
+<td align="center">8<sup>7</sup>
+</td>
+<td align="right">5745 年 227 天</td>
+<td align="left">7711-10-23</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>42</sup>
+<td align="center"></td>
+<td align="center">2<sup>20</sup>
 </td>
-<td></td>
-<td>8<sup>14</sup>
+<td align="center">16<sup>5</sup>
 </td>
-<td>139 年 168 天 + 7:35:11.104</td>
+<td align="center"></td>
+<td align="right">2872 年 296 天</td>
+<td align="left">4840-11-26</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>41</sup>
+<td align="center">10<sup>6</sup>
 </td>
-<td></td>
-<td></td>
-<td>69 年 266 天 + 15:47:35.552</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">2739 年 265 天</td>
+<td align="left">4707-11-29</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>40</sup>
+<td align="center"></td>
+<td align="center">2<sup>19</sup>
 </td>
-<td>16<sup>3</sup>
-</td>
-<td></td>
-<td>34 年 315 天 + 19:53:47.776</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">1436 年 148 天</td>
+<td align="left">3405-06-15</td>
 </tr>
 <tr>
-<td>10<sup>12</sup>
+<td align="center"></td>
+<td align="center">2<sup>18</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>31 年 259 天 + 1:46:40</td>
+<td align="center"></td>
+<td align="center">8<sup>6</sup>
+</td>
+<td align="right">718 年 74 天</td>
+<td align="left">2687-09-23</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>39</sup>
+<td align="center"></td>
+<td align="center">2<sup>17</sup>
 </td>
-<td></td>
-<td>8<sup>13</sup>
-</td>
-<td>17 年 157 天 + 21:56:53.888</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">359 年 37 天</td>
+<td align="left">2328-11-12</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>38</sup>
+<td align="center">10<sup>5</sup>
 </td>
-<td></td>
-<td></td>
-<td>8 年 261 天 + 10:58:26.944</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">273 年 355 天</td>
+<td align="left">2243-10-17</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>37</sup>
+<td align="center"></td>
+<td align="center">2<sup>16</sup>
 </td>
-<td></td>
-<td></td>
-<td>4 年 130 天 + 17:29:13.472</td>
+<td align="center">16<sup>4</sup>
+</td>
+<td align="center"></td>
+<td align="right">179 年 201 天</td>
+<td align="left">2149-06-07</td>
 </tr>
 <tr>
-<td>10<sup>11</sup>
+<td align="center"></td>
+<td align="center">2<sup>15</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>3 年 62 天 + 9:46:40</td>
+<td align="center"></td>
+<td align="center">8<sup>5</sup>
+</td>
+<td align="right">89 年 283 天</td>
+<td align="left">2059-09-19</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>36</sup>
+<td align="center"></td>
+<td align="center">2<sup>14</sup>
 </td>
-<td>16<sup>3</sup>
-</td>
-<td>8<sup>12</sup>
-</td>
-<td>2 年 65 天 + 8:44:36.736</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">44 年 324 天</td>
+<td align="left">2014-11-10</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>35</sup>
+<td align="center">10<sup>4</sup>
 </td>
-<td></td>
-<td></td>
-<td>1 年 32 天 + 16:22:18.368</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">27 年 145 天</td>
+<td align="left">1997-05-19</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>34</sup>
+<td align="center"></td>
+<td align="center">2<sup>13</sup>
 </td>
-<td></td>
-<td></td>
-<td>198 天 + 20:11:09.184</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">22 年 162 天</td>
+<td align="left">1992-06-06</td>
 </tr>
 <tr>
-<td>10<sup>10</sup>
+<td align="center"></td>
+<td align="center">2<sup>12</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>115 天 + 17:46:40</td>
+<td align="center">16<sup>3</sup>
+</td>
+<td align="center">8<sup>4</sup>
+</td>
+<td align="right">11 年 81 天</td>
+<td align="left">1981-03-20</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>33</sup>
+<td align="center"></td>
+<td align="center">2<sup>11</sup>
 </td>
-<td></td>
-<td>8<sup>11</sup>
-</td>
-<td>99 天 + 10:05:34.592</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">5 年 223 天</td>
+<td align="left">1975-08-11</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>32</sup>
+<td align="center"></td>
+<td align="center">2<sup>10</sup>
 </td>
-<td>16<sup>3</sup>
-</td>
-<td></td>
-<td>49 天 + 17:02:47.296</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">2 年 294 天</td>
+<td align="left">1972-10-21</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>31</sup>
+<td align="center">10<sup>3</sup>
 </td>
-<td></td>
-<td></td>
-<td>24 天 + 20:31:23.648</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">2 年 270 天</td>
+<td align="left">1972-09-27</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>30</sup>
+<td align="center"></td>
+<td align="center">2<sup>9</sup>
 </td>
-<td></td>
-<td>8<sup>10</sup>
+<td align="center"></td>
+<td align="center">8<sup>3</sup>
 </td>
-<td>12 天 + 10:15:41.824</td>
+<td align="right">1 年 147 天</td>
+<td align="left">1971-05-28</td>
 </tr>
 <tr>
-<td>10<sup>9</sup>
+<td align="center"></td>
+<td align="center">2<sup>8</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>11 天 + 13:46:40</td>
+<td align="center">16<sup>2</sup>
+</td>
+<td align="center"></td>
+<td align="right">256 天</td>
+<td align="left">1970-09-14</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>29</sup>
+<td align="center"></td>
+<td align="center">2<sup>7</sup>
 </td>
-<td></td>
-<td></td>
-<td>6 天 + 5:07:50.912</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">128 天</td>
+<td align="left">1970-05-09</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>28</sup>
+<td align="center">10<sup>2</sup>
 </td>
-<td>16<sup>3</sup>
-</td>
-<td></td>
-<td>3 天 + 2:33:55.456</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">100 天</td>
+<td align="left">1970-04-11</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>27</sup>
+<td align="center"></td>
+<td align="center">2<sup>6</sup>
 </td>
-<td></td>
-<td>8<sup>9</sup>
+<td align="center"></td>
+<td align="center">8<sup>2</sup>
 </td>
-<td>1 天 + 13:16:57.728</td>
+<td align="right">64 天</td>
+<td align="left">1970-03-06</td>
 </tr>
 <tr>
-<td>10<sup>8</sup>
+<td align="center"></td>
+<td align="center">2<sup>5</sup>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td>1 天 + 3:46:40</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">32 天</td>
+<td align="left">1970-02-02</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>26</sup>
+<td align="center"></td>
+<td align="center">2<sup>4</sup>
 </td>
-<td></td>
-<td></td>
-<td>18:38:28.864</td>
+<td align="center">16<sup>1</sup>
+</td>
+<td align="center"></td>
+<td align="right">16 天</td>
+<td align="left">1970-01-17</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>25</sup>
+<td align="center">10<sup>1</sup>
 </td>
-<td></td>
-<td></td>
-<td>9:19:14.432</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">10 天</td>
+<td align="left">1970-01-11</td>
 </tr>
 <tr>
-<td></td>
-<td>2<sup>24</sup>
+<td align="center"></td>
+<td align="center">2<sup>3</sup>
 </td>
-<td>16<sup>3</sup>
+<td align="center"></td>
+<td align="center">8<sup>1</sup>
 </td>
-<td>8<sup>8</sup>
-</td>
-<td>4:39:37.216</td>
-</tr>
-<tr>
-<td>10<sup>7</sup>
-</td>
-<td></td>
-<td></td>
-<td></td>
-<td>2:46:40</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>23</sup>
-</td>
-<td></td>
-<td></td>
-<td>2:19:48.608</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>22</sup>
-</td>
-<td></td>
-<td></td>
-<td>1:09:54.304</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>21</sup>
-</td>
-<td></td>
-<td>8<sup>7</sup>
-</td>
-<td>0:34:57.152</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>20</sup>
-</td>
-<td>16<sup>3</sup>
-</td>
-<td></td>
-<td>0:17:28.576</td>
-</tr>
-<tr>
-<td>10<sup>6</sup>
-</td>
-<td></td>
-<td></td>
-<td></td>
-<td>0:16:40</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>19</sup>
-</td>
-<td></td>
-<td></td>
-<td>0:08:44.288</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>18</sup>
-</td>
-<td></td>
-<td>8<sup>6</sup>
-</td>
-<td>0:04:22.144</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>17</sup>
-</td>
-<td></td>
-<td></td>
-<td>0:02:11.072</td>
-</tr>
-<tr>
-<td>10<sup>5</sup>
-</td>
-<td></td>
-<td></td>
-<td></td>
-<td>0:01:40</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>16</sup>
-</td>
-<td>16<sup>3</sup>
-</td>
-<td></td>
-<td>0:01:05.536</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>15</sup>
-</td>
-<td></td>
-<td>8<sup>5</sup>
-</td>
-<td>0:00:32.768</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>14</sup>
-</td>
-<td></td>
-<td></td>
-<td>0:00:16.384</td>
-</tr>
-<tr>
-<td>10<sup>4</sup>
-</td>
-<td></td>
-<td></td>
-<td></td>
-<td>0:00:10</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>13</sup>
-</td>
-<td></td>
-<td></td>
-<td>0:00:08.192</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>12</sup>
-</td>
-<td>16<sup>3</sup>
-</td>
-<td>8<sup>4</sup>
-</td>
-<td>0:00:04.096</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>11</sup>
-</td>
-<td></td>
-<td></td>
-<td>0:00:02.048</td>
-</tr>
-<tr>
-<td></td>
-<td>2<sup>10</sup>
-</td>
-<td></td>
-<td></td>
-<td>0:00:01.024</td>
-</tr>
-<tr>
-<td>10<sup>3</sup>
-</td>
-<td></td>
-<td></td>
-<td></td>
-<td>0:00:01</td>
+<td align="right">8 天</td>
+<td align="left">1970-01-09</td>
 </tr>
 </tbody>
 </table>
+<h2><a id="user-content-生成代码" class="anchor" aria-hidden="true" tabindex="-1" href="#生成代码"><span aria-hidden="true" class="octicon octicon-link"></span></a>生成代码</h2>
+<div class="highlight highlight-source-python"><pre><span class="pl-c">#!/usr/bin/python3.11</span>
+<span class="pl-k">from</span> __future__ <span class="pl-k">import</span> <span class="pl-s1">annotations</span>
+<span class="pl-k">import</span> <span class="pl-s1">math</span>
+<span class="pl-k">from</span> <span class="pl-s1">datetime</span> <span class="pl-k">import</span> <span class="pl-s1">datetime</span>, <span class="pl-s1">timedelta</span>
+<span class="pl-k">from</span> <span class="pl-s1">itertools</span> <span class="pl-k">import</span> <span class="pl-s1">chain</span>
+
+
+<span class="pl-k">def</span> <span class="pl-en">is_integer</span>(<span class="pl-s1">number</span>: <span class="pl-s1">int</span> <span class="pl-c1">|</span> <span class="pl-s1">float</span>) <span class="pl-c1">-&gt;</span> <span class="pl-s1">bool</span>:
+    <span class="pl-s1">n</span> <span class="pl-c1">=</span> <span class="pl-en">round</span>(<span class="pl-s1">number</span>, <span class="pl-c1">6</span>)
+    <span class="pl-k">return</span> <span class="pl-en">int</span>(<span class="pl-s1">n</span>) <span class="pl-c1">+</span> <span class="pl-c1">0.0</span> <span class="pl-c1">==</span> <span class="pl-s1">n</span>
+
+
+<span class="pl-k">def</span> <span class="pl-en">calc_stamp_time</span>(<span class="pl-c1">**</span><span class="pl-s1">kwargs</span>) <span class="pl-c1">-&gt;</span> <span class="pl-s1">str</span>:
+    <span class="pl-k">try</span>:
+        <span class="pl-s1">string</span> <span class="pl-c1">=</span> <span class="pl-en">str</span>(<span class="pl-s1">epoch</span> <span class="pl-c1">+</span> <span class="pl-en">timedelta</span>(<span class="pl-c1">**</span><span class="pl-s1">kwargs</span>))
+    <span class="pl-k">except</span> <span class="pl-v">OverflowError</span>:
+        <span class="pl-k">return</span> <span class="pl-s">'-'</span>
+    <span class="pl-k">if</span> <span class="pl-s1">string</span>.<span class="pl-en">endswith</span>(<span class="pl-s">'.000'</span>):
+        <span class="pl-k">return</span> <span class="pl-s1">string</span>[:<span class="pl-c1">-</span><span class="pl-c1">1</span>]
+    <span class="pl-k">elif</span> <span class="pl-s1">string</span>.<span class="pl-en">endswith</span>(<span class="pl-s">'000'</span>):
+        <span class="pl-k">return</span> <span class="pl-s1">string</span>[:<span class="pl-c1">-</span><span class="pl-c1">3</span>]
+    <span class="pl-k">else</span>:
+        <span class="pl-k">return</span> <span class="pl-s1">string</span>
+
+
+<span class="pl-k">def</span> <span class="pl-en">separate</span>(<span class="pl-s1">number</span>: <span class="pl-s1">int</span>, <span class="pl-s1">bits</span><span class="pl-c1">=</span><span class="pl-c1">4</span>, <span class="pl-s1">separator</span><span class="pl-c1">=</span><span class="pl-s">','</span>) <span class="pl-c1">-&gt;</span> <span class="pl-s1">str</span>:
+    <span class="pl-k">def</span> <span class="pl-en">stream</span>():
+        <span class="pl-s1">counter</span> <span class="pl-c1">=</span> <span class="pl-c1">1</span>
+        <span class="pl-k">for</span> <span class="pl-s1">d</span> <span class="pl-c1">in</span> <span class="pl-en">str</span>(<span class="pl-s1">number</span>)[::<span class="pl-c1">-</span><span class="pl-c1">1</span>]:
+            <span class="pl-k">if</span> <span class="pl-s1">counter</span> <span class="pl-c1">&gt;</span> <span class="pl-s1">bits</span>:
+                <span class="pl-k">yield</span> <span class="pl-s1">separator</span>
+                <span class="pl-s1">counter</span> <span class="pl-c1">=</span> <span class="pl-c1">1</span>
+            <span class="pl-k">yield</span> <span class="pl-s1">d</span>
+            <span class="pl-s1">counter</span> <span class="pl-c1">+=</span> <span class="pl-c1">1</span>
+
+    <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-en">stream</span>())[::<span class="pl-c1">-</span><span class="pl-c1">1</span>]
+
+
+<span class="pl-s1">epoch</span> <span class="pl-c1">=</span> <span class="pl-en">datetime</span>(<span class="pl-c1">1970</span>, <span class="pl-c1">1</span>, <span class="pl-c1">1</span>)
+<span class="pl-s1">table_d</span> <span class="pl-c1">=</span> <span class="pl-en">list</span>()
+<span class="pl-s1">table_s</span> <span class="pl-c1">=</span> <span class="pl-en">list</span>()
+<span class="pl-s1">table_ms</span> <span class="pl-c1">=</span> <span class="pl-en">list</span>()
+<span class="pl-s1">stamps</span> <span class="pl-c1">=</span> <span class="pl-s1">chain</span>.<span class="pl-en">from_iterable</span>([
+    <span class="pl-en">map</span>(<span class="pl-k">lambda</span> <span class="pl-s1">power</span>: (<span class="pl-c1">1</span> <span class="pl-c1">&lt;&lt;</span> <span class="pl-s1">power</span>, <span class="pl-c1">2</span>, <span class="pl-s1">power</span>), <span class="pl-en">range</span>(<span class="pl-c1">64</span> <span class="pl-c1">+</span> <span class="pl-c1">1</span>)),
+    <span class="pl-en">map</span>(<span class="pl-k">lambda</span> <span class="pl-s1">power</span>: (<span class="pl-c1">10</span> <span class="pl-c1">**</span> <span class="pl-s1">power</span>, <span class="pl-c1">10</span>, <span class="pl-s1">power</span>), <span class="pl-en">range</span>(<span class="pl-c1">19</span> <span class="pl-c1">+</span> <span class="pl-c1">1</span>)),
+])
+<span class="pl-k">for</span> <span class="pl-s1">stamp</span>, <span class="pl-s1">base</span>, <span class="pl-s1">power</span> <span class="pl-c1">in</span> <span class="pl-en">reversed</span>(<span class="pl-en">sorted</span>(<span class="pl-s1">stamps</span>)):
+    <span class="pl-c"># 底数和指数</span>
+    <span class="pl-s1">equal_base16</span> <span class="pl-c1">=</span> <span class="pl-en">is_integer</span>(<span class="pl-s1">power16</span> <span class="pl-c1">:=</span> <span class="pl-s1">math</span>.<span class="pl-en">log</span>(<span class="pl-s1">stamp</span>, <span class="pl-c1">16</span>))
+    <span class="pl-s1">equal_base8</span> <span class="pl-c1">=</span> <span class="pl-en">is_integer</span>(<span class="pl-s1">power8</span> <span class="pl-c1">:=</span> <span class="pl-s1">math</span>.<span class="pl-en">log</span>(<span class="pl-s1">stamp</span>, <span class="pl-c1">8</span>))
+    <span class="pl-s1">cols</span> <span class="pl-c1">=</span> [
+        <span class="pl-s">f'10&lt;sup&gt;<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">power</span><span class="pl-kos">}</span></span>&lt;/sup&gt;'</span> <span class="pl-k">if</span> <span class="pl-s1">base</span> <span class="pl-c1">==</span> <span class="pl-c1">10</span> <span class="pl-k">else</span> <span class="pl-s">''</span>,
+        <span class="pl-s">f'2&lt;sup&gt;<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">power</span><span class="pl-kos">}</span></span>&lt;/sup&gt;'</span> <span class="pl-k">if</span> <span class="pl-s1">base</span> <span class="pl-c1">==</span> <span class="pl-c1">2</span> <span class="pl-k">else</span> <span class="pl-s">''</span>,
+        <span class="pl-s">f'16&lt;sup&gt;<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">int</span>(<span class="pl-s1">power16</span>)<span class="pl-kos">}</span></span>&lt;/sup&gt;'</span> <span class="pl-k">if</span> <span class="pl-s1">equal_base16</span> <span class="pl-k">else</span> <span class="pl-s">''</span>,
+        <span class="pl-s">f'8&lt;sup&gt;<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">int</span>(<span class="pl-s1">power8</span>)<span class="pl-kos">}</span></span>&lt;/sup&gt;'</span> <span class="pl-k">if</span> <span class="pl-s1">equal_base8</span> <span class="pl-k">else</span> <span class="pl-s">''</span>,
+        <span class="pl-s">'&lt;Time Delta&gt;'</span>,
+        <span class="pl-s">'&lt;GMT+0 Time&gt;'</span>,
+    ]
+
+    <span class="pl-c"># 日戳 --------------------------------</span>
+    <span class="pl-s1">years</span>, <span class="pl-s1">days</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">stamp</span>, <span class="pl-c1">365</span>)
+    <span class="pl-s1">cols</span>[<span class="pl-c1">-</span><span class="pl-c1">1</span>], <span class="pl-s1">_</span>, <span class="pl-s1">_</span> <span class="pl-c1">=</span> <span class="pl-en">calc_stamp_time</span>(<span class="pl-s1">days</span><span class="pl-c1">=</span><span class="pl-s1">stamp</span>).<span class="pl-en">partition</span>(<span class="pl-s">' '</span>)
+    <span class="pl-s1">cols</span>[<span class="pl-c1">-</span><span class="pl-c1">2</span>] <span class="pl-c1">=</span> <span class="pl-s">f'<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">separate</span>(<span class="pl-s1">years</span>)<span class="pl-kos">}</span></span> 年 <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">days</span><span class="pl-kos">}</span></span> 天'</span> <span class="pl-k">if</span> <span class="pl-s1">years</span> <span class="pl-c1">&gt;</span> <span class="pl-c1">0</span> <span class="pl-k">else</span> <span class="pl-s">f'<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">days</span><span class="pl-kos">}</span></span> 天'</span>
+    <span class="pl-s1">table_d</span>.<span class="pl-en">append</span>(<span class="pl-s">'| '</span> <span class="pl-c1">+</span> <span class="pl-s">' | '</span>.<span class="pl-en">join</span>(<span class="pl-s1">cols</span>) <span class="pl-c1">+</span> <span class="pl-s">' |'</span>)
+
+    <span class="pl-c"># 秒戳 --------------------------------</span>
+    <span class="pl-s1">minutes</span>, <span class="pl-s1">seconds</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">stamp</span>, <span class="pl-c1">60</span>)
+    <span class="pl-s1">hours</span>, <span class="pl-s1">minutes</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">minutes</span>, <span class="pl-c1">60</span>)
+    <span class="pl-s1">days</span>, <span class="pl-s1">hours</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">hours</span>, <span class="pl-c1">24</span>)
+    <span class="pl-s1">years</span>, <span class="pl-s1">days</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">days</span>, <span class="pl-c1">365</span>)
+    <span class="pl-s1">cols</span>[<span class="pl-c1">-</span><span class="pl-c1">1</span>] <span class="pl-c1">=</span> <span class="pl-en">calc_stamp_time</span>(<span class="pl-s1">seconds</span><span class="pl-c1">=</span><span class="pl-s1">stamp</span>)
+    <span class="pl-s1">cols</span>[<span class="pl-c1">-</span><span class="pl-c1">2</span>] <span class="pl-c1">=</span> (
+            (<span class="pl-s">f'<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">separate</span>(<span class="pl-s1">years</span>)<span class="pl-kos">}</span></span> 年 <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">days</span><span class="pl-kos">}</span></span> 天 '</span> <span class="pl-k">if</span> <span class="pl-s1">years</span> <span class="pl-c1">&gt;</span> <span class="pl-c1">0</span> <span class="pl-k">else</span> <span class="pl-s">f'<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">days</span><span class="pl-kos">}</span></span> 天 '</span> <span class="pl-k">if</span> <span class="pl-s1">days</span> <span class="pl-c1">&gt;</span> <span class="pl-c1">0</span> <span class="pl-k">else</span> <span class="pl-s">''</span>)
+            <span class="pl-c1">+</span> <span class="pl-s">f'<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">hours</span>:02d<span class="pl-kos">}</span></span>:<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">minutes</span>:02d<span class="pl-kos">}</span></span>:<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">seconds</span>:02d<span class="pl-kos">}</span></span>'</span>
+    )
+    <span class="pl-s1">table_s</span>.<span class="pl-en">append</span>(<span class="pl-s">'| '</span> <span class="pl-c1">+</span> <span class="pl-s">' | '</span>.<span class="pl-en">join</span>(<span class="pl-s1">cols</span>) <span class="pl-c1">+</span> <span class="pl-s">' |'</span>)
+
+    <span class="pl-c"># 毫秒戳 --------------------------------</span>
+    <span class="pl-s1">seconds</span>, <span class="pl-s1">milliseconds</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">stamp</span>, <span class="pl-c1">1000</span>)
+    <span class="pl-s1">minutes</span>, <span class="pl-s1">seconds</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">seconds</span>, <span class="pl-c1">60</span>)
+    <span class="pl-s1">hours</span>, <span class="pl-s1">minutes</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">minutes</span>, <span class="pl-c1">60</span>)
+    <span class="pl-s1">days</span>, <span class="pl-s1">hours</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">hours</span>, <span class="pl-c1">24</span>)
+    <span class="pl-s1">years</span>, <span class="pl-s1">days</span> <span class="pl-c1">=</span> <span class="pl-en">divmod</span>(<span class="pl-s1">days</span>, <span class="pl-c1">365</span>)
+    <span class="pl-s1">cols</span>[<span class="pl-c1">-</span><span class="pl-c1">1</span>] <span class="pl-c1">=</span> <span class="pl-en">calc_stamp_time</span>(<span class="pl-s1">milliseconds</span><span class="pl-c1">=</span><span class="pl-s1">stamp</span>)
+    <span class="pl-s1">cols</span>[<span class="pl-c1">-</span><span class="pl-c1">2</span>] <span class="pl-c1">=</span> (
+            (<span class="pl-s">f'<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">separate</span>(<span class="pl-s1">years</span>)<span class="pl-kos">}</span></span> 年 <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">days</span><span class="pl-kos">}</span></span> 天 '</span> <span class="pl-k">if</span> <span class="pl-s1">years</span> <span class="pl-c1">&gt;</span> <span class="pl-c1">0</span> <span class="pl-k">else</span> <span class="pl-s">f'<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">days</span><span class="pl-kos">}</span></span> 天 '</span> <span class="pl-k">if</span> <span class="pl-s1">days</span> <span class="pl-c1">&gt;</span> <span class="pl-c1">0</span> <span class="pl-k">else</span> <span class="pl-s">''</span>)
+            <span class="pl-c1">+</span> <span class="pl-s">f'<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">hours</span>:02d<span class="pl-kos">}</span></span>:<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">minutes</span>:02d<span class="pl-kos">}</span></span>:<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">seconds</span>:02d<span class="pl-kos">}</span></span>.<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">milliseconds</span>:03d<span class="pl-kos">}</span></span>'</span>
+    )
+    <span class="pl-s1">table_ms</span>.<span class="pl-en">append</span>(<span class="pl-s">'| '</span> <span class="pl-c1">+</span> <span class="pl-s">' | '</span>.<span class="pl-en">join</span>(<span class="pl-s1">cols</span>) <span class="pl-c1">+</span> <span class="pl-s">' |'</span>)
+
+<span class="pl-en">print</span>(<span class="pl-s">'<span class="pl-cce">\n</span>'</span>.<span class="pl-en">join</span>(<span class="pl-s1">table_ms</span>))
+<span class="pl-en">print</span>(<span class="pl-s">'<span class="pl-cce">\n</span>'</span>.<span class="pl-en">join</span>(<span class="pl-s1">table_s</span>))
+<span class="pl-en">print</span>(<span class="pl-s">'<span class="pl-cce">\n</span>'</span>.<span class="pl-en">join</span>(<span class="pl-s1">table_d</span>))</pre></div>
 
 </div>
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
